@@ -1,50 +1,188 @@
+// ========================================
+// ПУТЬ ОФИЦЕРА — ОСНОВНОЙ ИГРОВОЙ КОД
+// ========================================
+
+// Однократный сброс старых DEV-данных
 if (!localStorage.getItem("gameVersion2")) {
   localStorage.removeItem("rank");
   localStorage.removeItem("xp");
   localStorage.removeItem("energy");
   localStorage.removeItem("credits");
+
   localStorage.setItem("gameVersion2", "1");
 }
 
+
+// ========================================
+// ЗВАНИЯ
+// ========================================
+
 const ranks = [
-  ["Рядовой", "Казарма · 1-е отделение", "Первые шаги к большой цели."],
-  ["Ефрейтор", "Казарма · 2-е отделение", "Первые обязанности."],
-  ["Младший сержант", "Штаб подразделения", "Первые командные задачи."],
-  ["Сержант", "Штаб подразделения", "Уверенное продвижение по службе."],
-  ["Старший сержант", "Командный пункт", "Опытный военнослужащий."],
-  ["Прапорщик", "Офицерская часть", "Переход к новым задачам."],
-  ["Младший лейтенант", "Офицерский корпус", "Начало офицерской карьеры."],
-  ["Лейтенант", "Тактический центр", "Командование подразделением."],
-  ["Старший лейтенант", "Командный центр", "Серьёзная ответственность."],
-  ["Капитан", "Штаб соединения", "Командир среднего звена."],
-  ["Майор", "Оперативный штаб", "Оперативное управление."],
-  ["Подполковник", "Штаб округа", "Высокий уровень командования."],
-  ["Полковник", "Главный штаб", "Командование крупными силами."],
-  ["Генерал-майор", "Военное командование", "Высший командный уровень."],
-  ["Генерал-лейтенант", "Генеральный штаб", "Стратегическое управление."],
-  ["Генерал-полковник", "Высшее командование", "Высшая школа командования."],
-  ["Генерал армии", "Кремлёвский кабинет", "Финальное звание."]
+  [
+    "Рядовой",
+    "Казарма · 1-е отделение",
+    "Первые шаги к большой цели."
+  ],
+  [
+    "Ефрейтор",
+    "Казарма · 2-е отделение",
+    "Первые обязанности."
+  ],
+  [
+    "Младший сержант",
+    "Штаб подразделения",
+    "Первые командные задачи."
+  ],
+  [
+    "Сержант",
+    "Штаб подразделения",
+    "Уверенное продвижение по службе."
+  ],
+  [
+    "Старший сержант",
+    "Командный пункт",
+    "Опытный военнослужащий."
+  ],
+  [
+    "Прапорщик",
+    "Офицерская часть",
+    "Переход к новым задачам."
+  ],
+  [
+    "Младший лейтенант",
+    "Офицерский корпус",
+    "Начало офицерской карьеры."
+  ],
+  [
+    "Лейтенант",
+    "Тактический центр",
+    "Командование подразделением."
+  ],
+  [
+    "Старший лейтенант",
+    "Командный центр",
+    "Серьёзная ответственность."
+  ],
+  [
+    "Капитан",
+    "Штаб соединения",
+    "Командир среднего звена."
+  ],
+  [
+    "Майор",
+    "Оперативный штаб",
+    "Оперативное управление."
+  ],
+  [
+    "Подполковник",
+    "Штаб округа",
+    "Высокий уровень командования."
+  ],
+  [
+    "Полковник",
+    "Главный штаб",
+    "Командование крупными силами."
+  ],
+  [
+    "Генерал-майор",
+    "Военное командование",
+    "Высший командный уровень."
+  ],
+  [
+    "Генерал-лейтенант",
+    "Генеральный штаб",
+    "Стратегическое управление."
+  ],
+  [
+    "Генерал-полковник",
+    "Высшее командование",
+    "Высшая школа командования."
+  ],
+  [
+    "Генерал армии",
+    "Кремлёвский кабинет",
+    "Финальное звание."
+  ]
 ];
 
-let rank = Number(localStorage.getItem("rank") || 0);
-let xp = Number(localStorage.getItem("xp") || 0);
-let energy = Number(localStorage.getItem("energy") || 100);
-let credits = Number(localStorage.getItem("credits") || 12450);
-let last = Number(localStorage.getItem("last") || Date.now());
 
-let maxEnergy = Math.min(400, 100 + rank * 15);
+// ========================================
+// СОСТОЯНИЕ ИГРОКА
+// ========================================
 
-function need() {
-  return 100;
+let rank = Number(
+  localStorage.getItem("rank") || 0
+);
+
+let xp = Number(
+  localStorage.getItem("xp") || 0
+);
+
+let energy = Number(
+  localStorage.getItem("energy") || 100
+);
+
+let credits = Number(
+  localStorage.getItem("credits") || 12450
+);
+
+let lastEnergyTime = Number(
+  localStorage.getItem("lastEnergyTime") || Date.now()
+);
+
+
+// Максимальная энергия
+let maxEnergy = Math.min(
+  400,
+  100 + rank * 15
+);
+
+
+// ========================================
+// НАСТРОЙКИ
+// ========================================
+
+const XP_PER_TRAINING = 10;
+const CREDITS_PER_TRAINING = 120;
+const XP_FOR_RANK = 100;
+const ENERGY_RECOVERY_TIME = 10000;
+
+
+// ========================================
+// СОХРАНЕНИЕ
+// ========================================
+
+function saveGame() {
+  localStorage.setItem(
+    "rank",
+    String(rank)
+  );
+
+  localStorage.setItem(
+    "xp",
+    String(xp)
+  );
+
+  localStorage.setItem(
+    "energy",
+    String(energy)
+  );
+
+  localStorage.setItem(
+    "credits",
+    String(credits)
+  );
+
+  localStorage.setItem(
+    "lastEnergyTime",
+    String(lastEnergyTime)
+  );
 }
 
-function save() {
-  localStorage.setItem("rank", rank);
-  localStorage.setItem("xp", xp);
-  localStorage.setItem("energy", energy);
-  localStorage.setItem("credits", credits);
-  localStorage.setItem("last", last);
-}
+
+// ========================================
+// БЕЗОПАСНОЕ ИЗМЕНЕНИЕ ТЕКСТА
+// ========================================
 
 function setText(id, value) {
   const element = document.getElementById(id);
@@ -54,139 +192,327 @@ function setText(id, value) {
   }
 }
 
+
+// ========================================
+// ВОССТАНОВЛЕНИЕ ЭНЕРГИИ
+// ========================================
+
 function recoverEnergy() {
   const now = Date.now();
-  const passed = Math.floor((now - last) / 10000);
 
-  if (passed > 0) {
-    energy = Math.min(maxEnergy, energy + passed);
-    last += passed * 10000;
-  }
-}
+  const passed = Math.floor(
+    (now - lastEnergyTime) /
+    ENERGY_RECOVERY_TIME
+  );
 
-function checkRank() {
-  while (rank < ranks.length - 1 && xp >= need()) {
-    xp -= need();
-    rank++;
-
-    maxEnergy = Math.min(400, 100 + rank * 15);
-    energy = Math.min(maxEnergy, energy + 15);
-  }
-}
-
-function renderRanks() {
-  const list = document.getElementById("ranks");
-
-  if (!list) {
+  if (passed <= 0) {
     return;
   }
 
-  list.innerHTML = "";
+  energy = Math.min(
+    maxEnergy,
+    energy + passed
+  );
+
+  lastEnergyTime +=
+    passed * ENERGY_RECOVERY_TIME;
+}
+
+
+// ========================================
+// ПРОВЕРКА ПОВЫШЕНИЯ
+// ========================================
+
+function checkRank() {
+
+  while (
+    rank < ranks.length - 1 &&
+    xp >= XP_FOR_RANK
+  ) {
+
+    xp -= XP_FOR_RANK;
+
+    rank++;
+
+    maxEnergy = Math.min(
+      400,
+      100 + rank * 15
+    );
+
+    energy = Math.min(
+      maxEnergy,
+      energy + 15
+    );
+  }
+}
+
+
+// ========================================
+// СПИСОК ЗВАНИЙ
+// ========================================
+
+function renderRanks() {
+
+  const container =
+    document.getElementById("ranks");
+
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML = "";
 
   ranks.forEach(function(item, index) {
-    const element = document.createElement("div");
+
+    const element =
+      document.createElement("div");
 
     element.className =
-      "rank-item" + (index === rank ? " active" : "");
+      "rank-item" +
+      (index === rank ? " active" : "");
 
-    element.innerHTML =
-      "<b>" + item[0] + "</b>" +
-      "<small>" +
-      (index === ranks.length - 1
-        ? "Финальное звание"
-        : "100 XP") +
-      "</small>";
+    const title =
+      document.createElement("b");
 
-    list.appendChild(element);
+    title.textContent =
+      item[0];
+
+    const info =
+      document.createElement("small");
+
+    if (index === ranks.length - 1) {
+      info.textContent =
+        "Финальное звание";
+    } else {
+      info.textContent =
+        "100 XP";
+    }
+
+    element.appendChild(title);
+    element.appendChild(info);
+
+    container.appendChild(element);
   });
 }
 
+
+// ========================================
+// ОБНОВЛЕНИЕ ИНТЕРФЕЙСА
+// ========================================
+
 function render() {
+
   recoverEnergy();
+
   checkRank();
 
-  const currentRank = ranks[rank];
+  const currentRank =
+    ranks[rank];
 
-  setText("rank", currentRank[0]);
-  setText("place", currentRank[1]);
-  setText("description", currentRank[2]);
-  setText("level", rank + 1);
+  setText(
+    "rank",
+    currentRank[0]
+  );
 
-  setText("energy", energy);
-  setText("maxEnergy", maxEnergy);
-  setText("credits", credits.toLocaleString("ru-RU"));
+  setText(
+    "place",
+    currentRank[1]
+  );
 
-  setText("rankProgress", xp);
-  setText("rankNeed", need());
+  setText(
+    "description",
+    currentRank[2]
+  );
 
-  const energyBar = document.getElementById("energyBar");
+  setText(
+    "level",
+    rank + 1
+  );
+
+  setText(
+    "energy",
+    energy
+  );
+
+  setText(
+    "maxEnergy",
+    maxEnergy
+  );
+
+  setText(
+    "credits",
+    credits.toLocaleString("ru-RU")
+  );
+
+  setText(
+    "rankProgress",
+    xp
+  );
+
+  setText(
+    "rankNeed",
+    XP_FOR_RANK
+  );
+
+
+  // Полоса энергии
+
+  const energyBar =
+    document.getElementById("energyBar");
 
   if (energyBar) {
+
+    const energyPercent =
+      (energy / maxEnergy) * 100;
+
     energyBar.style.width =
-      (energy / maxEnergy * 100) + "%";
+      energyPercent + "%";
   }
 
-  const rankBar = document.getElementById("rankBar");
+
+  // Полоса опыта
+
+  const rankBar =
+    document.getElementById("rankBar");
 
   if (rankBar) {
+
+    const xpPercent =
+      (xp / XP_FOR_RANK) * 100;
+
     rankBar.style.width =
-      (xp / need() * 100) + "%";
+      xpPercent + "%";
   }
 
-  const button = document.getElementById("clickButton");
+
+  // Кнопка тренировки
+
+  const button =
+    document.getElementById("clickButton");
 
   if (button) {
+
     button.disabled =
       energy <= 0 ||
       rank >= ranks.length - 1;
   }
 
+
   renderRanks();
-  save();
+
+  saveGame();
 }
 
+
+// ========================================
+// ТРЕНИРОВКА
+// ========================================
+
 function training() {
+
   if (energy <= 0) {
+
     alert(
       "⚡ Энергия закончилась.\n\n" +
-      "Восстановление: +1 каждые 10 секунд."
+      "Восстановление: +1 энергия каждые 10 секунд."
     );
+
     return;
   }
+
 
   if (rank >= ranks.length - 1) {
+
+    alert(
+      "🎖 Ты достиг финального звания."
+    );
+
     return;
   }
 
-  const oldRank = rank;
 
+  const oldRank =
+    rank;
+
+
+  // Расход энергии
   energy -= 1;
-  xp += 10;
-  credits += 120;
 
+
+  // Получение опыта
+  xp += XP_PER_TRAINING;
+
+
+  // Получение кредитов
+  credits += CREDITS_PER_TRAINING;
+
+
+  // Проверяем повышение
   checkRank();
-  save();
+
+
+  // Сохраняем
+  saveGame();
+
+
+  // Обновляем экран
   render();
 
+
+  // Сообщение
   if (rank > oldRank) {
+
     alert(
       "🎖 ПОВЫШЕНИЕ!\n\n" +
       "Новое звание:\n" +
       ranks[rank][0]
     );
+
+  } else {
+
+    alert(
+      "🏅 Тренировка завершена!\n\n" +
+      "⭐ +10 XP\n" +
+      "💰 +120 кредитов\n" +
+      "⚡ -1 энергия"
+    );
   }
 }
 
+
+// ========================================
+// ПОДКЛЮЧЕНИЕ КНОПКИ
+// ========================================
+
 const trainingButton =
-  document.getElementById("clickButton");
+  document.getElementById(
+    "clickButton"
+  );
 
 if (trainingButton) {
+
+  trainingButton.disabled =
+    false;
+
   trainingButton.addEventListener(
     "click",
     training
   );
 }
 
-setInterval(render, 1000);
+
+// ========================================
+// АВТОМАТИЧЕСКОЕ ОБНОВЛЕНИЕ
+// ========================================
+
+setInterval(
+  render,
+  1000
+);
+
+
+// ========================================
+// ПЕРВЫЙ ЗАПУСК
+// ========================================
 
 render();
