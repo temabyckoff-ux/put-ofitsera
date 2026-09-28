@@ -1,3 +1,11 @@
+if (!localStorage.getItem("gameVersion2")) {
+  localStorage.removeItem("rank");
+  localStorage.removeItem("xp");
+  localStorage.removeItem("energy");
+  localStorage.removeItem("credits");
+  localStorage.setItem("gameVersion2", "1");
+}
+
 const ranks = [
   ["Рядовой", "Казарма · 1-е отделение", "Первые шаги к большой цели."],
   ["Ефрейтор", "Казарма · 2-е отделение", "Первые обязанности."],
