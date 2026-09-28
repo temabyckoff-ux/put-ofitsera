@@ -1,5 +1,3 @@
-const DEV_MODE = true;
-
 const ranks = [
   ["Рядовой","Казарма · 1-е отделение","Первые шаги к большой цели."],
   ["Ефрейтор","Казарма · 2-е отделение","Первые обязанности."],
@@ -21,169 +19,305 @@ const ranks = [
 ];
 
 let rank = Number(localStorage.rank || 0);
-let clicks = Number(localStorage.clicks || 0);
+let xp = Number(localStorage.xp || 0);
 let energy = Number(localStorage.energy || 100);
 let last = Number(localStorage.last || Date.now());
+let credits = Number(localStorage.credits || 0);
 
-let maxEnergy = Math.min(400, 100 + rank * 15);
+let maxEnergy = Math.min(
+  400,
+  100 + rank * 15
+);
 
-let credits = Number(localStorage.credits || 12450);
 
-function need(i) {
-  if (DEV_MODE) return 10;
-  return 100 * (i + 1);
+/* =========================
+   МИССИИ
+========================= */
+
+const missions = {
+
+  training: {
+    name: "Служебная тренировка",
+    xp: 10,
+    credits: 120,
+    energy: 1,
+    minRank: 0
+  },
+
+  commander: {
+    name: "Приказ командира",
+    xp: 25,
+    credits: 300,
+    energy: 2,
+    minRank: 1
+  },
+
+  tactical: {
+    name: "Тактическая подготовка",
+    xp: 50,
+    credits: 700,
+    energy: 3,
+    minRank: 2
+  }
+
+};
+
+
+/* =========================
+   ОПЫТ ДО СЛЕДУЮЩЕГО ЗВАНИЯ
+========================= */
+
+function need(rankIndex) {
+  return 100 * (rankIndex + 1);
 }
 
+
+/* =========================
+   СОХРАНЕНИЕ
+========================= */
+
 function save() {
+
   localStorage.rank = rank;
-  localStorage.clicks = clicks;
+  localStorage.xp = xp;
   localStorage.energy = energy;
   localStorage.last = Date.now();
   localStorage.credits = credits;
 }
 
+
+/* =========================
+   ВОССТАНОВЛЕНИЕ ЭНЕРГИИ
+   +1 каждые 10 секунд
+========================= */
+
 function recover() {
+
   const now = Date.now();
-  const passed = Math.floor((now - last) / 10000);
+
+  const passed =
+    Math.floor(
+      (now - last) / 10000
+    );
 
   if (passed > 0) {
-    energy = Math.min(maxEnergy, energy + passed);
-    last += passed * 10000;
+
+    energy =
+      Math.min(
+        maxEnergy,
+        energy + passed
+      );
+
+    last +=
+      passed * 10000;
   }
 }
+
+
+/* =========================
+   ВЫВОД ТЕКСТА
+========================= */
 
 function setText(id, value) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = value;
+
+  const el =
+    document.getElementById(id);
+
+  if (el) {
+    el.textContent = value;
+  }
 }
 
+
+/* =========================
+   ПОВЫШЕНИЕ ЗВАНИЯ
+========================= */
+
+function checkRank() {
+
+  while (
+    rank < ranks.length - 1 &&
+    xp >= need(rank)
+  ) {
+
+    rank++;
+
+    maxEnergy =
+      Math.min(
+        400,
+        100 + rank * 15
+      );
+
+    energy =
+      Math.min(
+        maxEnergy,
+        energy + 15
+      );
+  }
+}
+
+
+/* =========================
+   ОТОБРАЖЕНИЕ
+========================= */
+
 function render() {
+
   recover();
 
-  const data = ranks[rank];
-  if (!data) return;
+  checkRank();
 
-  const name = data[0];
-  const place = data[1];
-  const desc = data[2];
+  const data =
+    ranks[rank];
 
-  setText("rank", name);
-  setText("place", place);
-  setText("description", desc);
-  setText("level", rank + 1);
-
-  if (DEV_MODE) {
-    energy = maxEnergy;
+  if (!data) {
+    return;
   }
+
+  setText("rank", data[0]);
+  setText("place", data[1]);
+  setText("description", data[2]);
+  setText("level", rank + 1);
 
   setText("energy", energy);
   setText("maxEnergy", maxEnergy);
-  setText("maxEnergy2", maxEnergy);
-  setText("totalClicks", clicks);
-  setText("credits", credits.toLocaleString("ru-RU"));
 
-  const base = rank * 100;
-  const current = Math.max(0, clicks - base);
-  const n = need(rank);
+  setText(
+    "credits",
+    credits.toLocaleString("ru-RU")
+  );
 
-  setText("rankProgress", Math.min(current, n));
-  setText("rankNeed", n);
 
-  const energyBar = document.getElementById("energyBar");
+  /* XP */
+
+  const previous =
+    rank === 0
+      ? 0
+      : need(rank - 1);
+
+  const required =
+    need(rank);
+
+  const current =
+    Math.max(
+      0,
+      xp - previous
+    );
+
+  const progress =
+    Math.min(
+      current,
+      required - previous
+    );
+
+  setText(
+    "rankProgress",
+    progress
+  );
+
+  setText(
+    "rankNeed",
+    required - previous
+  );
+
+
+  /* Полоса энергии */
+
+  const energyBar =
+    document.getElementById(
+      "energyBar"
+    );
+
   if (energyBar) {
+
     energyBar.style.width =
-      DEV_MODE ? "100%" : (energy / maxEnergy * 100) + "%";
+      (
+        energy /
+        maxEnergy *
+        100
+      ) + "%";
   }
 
-  const rankBar = document.getElementById("rankBar");
+
+  /* Полоса опыта */
+
+  const rankBar =
+    document.getElementById(
+      "rankBar"
+    );
+
   if (rankBar) {
+
     rankBar.style.width =
-      Math.min(current, n) / n * 100 + "%";
+      (
+        progress /
+        (required - previous) *
+        100
+      ) + "%";
   }
 
-  const button = document.getElementById("clickButton");
+
+  /* Кнопка тренировки */
+
+  const button =
+    document.getElementById(
+      "clickButton"
+    );
 
   if (button) {
+
     button.disabled =
-      !DEV_MODE &&
-      (energy <= 0 || rank === ranks.length - 1);
+      energy <= 0 ||
+      rank >= ranks.length - 1;
   }
 
-  const next = document.getElementById("nextMini");
-  if (next) {
-    next.style.opacity =
-      rank === ranks.length - 1 ? ".2" : "1";
-  }
 
   renderRanks();
+
+  save();
 }
 
+
+/* =========================
+   СПИСОК ЗВАНИЙ
+========================= */
+
 function renderRanks() {
-  const el = document.getElementById("ranks");
-  if (!el) return;
+
+  const el =
+    document.getElementById(
+      "ranks"
+    );
+
+  if (!el) {
+    return;
+  }
 
   el.innerHTML = "";
 
-  ranks.forEach(function(r, i) {
-    const d = document.createElement("div");
+  ranks.forEach(
+    function(r, i) {
 
-    d.className =
-      "rank-item" + (i === rank ? " active" : "");
+      const d =
+        document.createElement(
+          "div"
+        );
 
-    d.innerHTML =
-      '<div class="tiny"></div>' +
-      '<b>' + r[0] + '</b>' +
-      '<small>' +
-      (i === ranks.length - 1
-        ? "Финал"
-        : need(i) + " кликов") +
-      '</small>';
+      d.className =
+        "rank-item" +
+        (
+          i === rank
+            ? " active"
+            : ""
+        );
 
-    el.appendChild(d);
-  });
-}
+      d.innerHTML =
+        "<b>" +
+        r[0] +
+        "</b>" +
 
-const clickButton =
-  document.getElementById("clickButton");
+        "<small>" +
 
-if (clickButton) {
-  clickButton.addEventListener("click", function() {
-
-    if (!DEV_MODE && energy <= 0) {
-      return;
-    }
-
-    if (!DEV_MODE) {
-      energy--;
-    } else {
-      energy = maxEnergy;
-    }
-
-    if (DEV_MODE) {
-      clicks += 10;
-      credits += 1000;
-    } else {
-      clicks++;
-      credits += 120;
-    }
-
-    if (
-      rank < ranks.length - 1 &&
-      clicks >= need(rank)
-    ) {
-      rank++;
-
-      maxEnergy =
-        Math.min(400, 100 + rank * 15);
-
-      energy = maxEnergy;
-    }
-
-    save();
-    render();
-  });
-}
-
-setInterval(render, 1000);
-
-render();
+        (
+          i === ranks.length - 1
+            ? "Ф
