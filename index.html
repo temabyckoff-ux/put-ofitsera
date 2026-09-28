@@ -2,281 +2,820 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Путь офицера</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="style.css">
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#080b10;color:#f4f6f8;font-family:Arial,sans-serif}
-.app{max-width:720px;margin:auto;padding:16px 12px 90px}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-h1{margin:0;font-size:26px}
-h2{margin:7px 0}
-p{margin:6px 0}
-.gold{color:#e5bd63}
-.muted{color:#8d99a8;font-size:12px}
-.level,.card{background:#121923;border:1px solid #293543;border-radius:16px}
-.level{padding:7px 12px;text-align:center;color:#8d99a8;font-size:10px}
-.level b{display:block;color:#f1cf78;font-size:21px}
-.card{padding:14px;margin-bottom:10px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.stat{background:#0b1118;border:1px solid #26313d;border-radius:11px;padding:10px}
-.stat small{display:block;color:#8d99a8;font-size:10px;margin-bottom:4px}
-.stat b{font-size:17px}
-.progress{height:7px;background:#252f3a;border-radius:10px;overflow:hidden;margin-top:7px}
-.progress i{display:block;height:100%;width:0;background:#e0b657}
-.big{width:100%;padding:16px;border:0;border-radius:14px;background:#d9ad52;color:#17120a;font-size:16px;font-weight:bold}
-.item{padding:11px 0;border-bottom:1px solid #29333e}
-.item:last-child{border:0}
-.lock{opacity:.4}
-.tab{display:none}
-.tab.active{display:block}
-.nav{position:fixed;bottom:0;left:0;right:0;max-width:720px;margin:auto;background:#0d131b;border-top:1px solid #293543;display:grid;grid-template-columns:repeat(5,1fr);padding:5px 2px}
-.nav button{border:0;background:none;color:#7f8b99;font-size:10px;padding:6px 1px}
-.nav button span{display:block;font-size:19px}
-.nav button.active{color:#e5bd63}
-.hidden{display:none}
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#080d13;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+
+.app{
+  max-width:520px;
+  margin:0 auto;
+  padding:14px 14px 90px;
+}
+
+.header{
+  text-align:center;
+  padding:8px 0 18px;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.subtitle{
+  margin-top:5px;
+  font-size:10px;
+  color:#8995a3;
+  letter-spacing:2px;
+}
+
+.card{
+  background:linear-gradient(145deg,#151d28,#0e141c);
+  border:1px solid #293441;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:12px;
+}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.avatar{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(145deg,#c7a64b,#765c1f);
+  font-size:28px;
+  flex-shrink:0;
+}
+
+.profile h2{
+  margin:0 0 4px;
+  font-size:18px;
+}
+
+.muted{
+  color:#8995a3;
+  font-size:12px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:12px;
+}
+
+.stat{
+  background:#0b1118;
+  border:1px solid #202b37;
+  border-radius:12px;
+  padding:11px;
+}
+
+.stat-title{
+  color:#7f8b99;
+  font-size:11px;
+}
+
+.stat-value{
+  margin-top:5px;
+  font-size:17px;
+  font-weight:800;
+}
+
+.progress{
+  height:7px;
+  background:#202934;
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:8px;
+}
+
+.progress > div{
+  height:100%;
+  width:0;
+  background:#c9a84e;
+  border-radius:10px;
+}
+
+.location{
+  color:#c9a84e;
+  font-size:12px;
+  margin-top:6px;
+}
+
+.main-button{
+  width:100%;
+  border:0;
+  border-radius:14px;
+  padding:17px;
+  background:linear-gradient(145deg,#c7a64b,#806525);
+  color:#fff;
+  font-size:15px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.main-button:disabled{
+  opacity:.45;
+}
+
+.section-title{
+  font-size:17px;
+  font-weight:900;
+  margin-bottom:12px;
+}
+
+.map{
+  position:relative;
+  padding:4px 0;
+}
+
+.map-line{
+  position:absolute;
+  left:29px;
+  top:28px;
+  bottom:28px;
+  width:2px;
+  background:#34404d;
+}
+
+.location-card{
+  position:relative;
+  display:flex;
+  gap:12px;
+  padding:12px 0;
+}
+
+.location-dot{
+  width:58px;
+  height:58px;
+  border-radius:16px;
+  background:#101821;
+  border:1px solid #33404d;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  z-index:2;
+  flex-shrink:0;
+}
+
+.location-card.open .location-dot{
+  border-color:#c9a84e;
+  background:#1b1910;
+}
+
+.location-card.current .location-dot{
+  background:linear-gradient(145deg,#c7a64b,#806525);
+}
+
+.location-info{
+  flex:1;
+  min-width:0;
+}
+
+.location-name{
+  font-weight:900;
+  font-size:15px;
+}
+
+.location-desc{
+  color:#7f8b99;
+  font-size:11px;
+  margin-top:4px;
+  line-height:1.4;
+}
+
+.location-status{
+  margin-top:6px;
+  font-size:10px;
+  color:#c9a84e;
+  font-weight:700;
+}
+
+.location-card.locked{
+  opacity:.42;
+}
+
+.mission{
+  margin-top:10px;
+  padding:10px;
+  border-radius:10px;
+  background:#0a1017;
+  border:1px solid #202b37;
+  font-size:11px;
+}
+
+.mission b{
+  display:block;
+  font-size:12px;
+  margin-bottom:4px;
+}
+
+.mission span{
+  color:#8995a3;
+}
+
+.tabs{
+  display:none;
+}
+
+.tab-content{
+  display:none;
+}
+
+.tab-content.active{
+  display:block;
+}
+
+.bottom-nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  background:#0b1118;
+  border-top:1px solid #25313d;
+  padding:8px 6px calc(8px + env(safe-area-inset-bottom));
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  z-index:100;
+}
+
+.nav-btn{
+  border:0;
+  background:transparent;
+  color:#74808d;
+  padding:7px 2px;
+  font-size:9px;
+  font-weight:700;
+}
+
+.nav-btn span{
+  display:block;
+  font-size:19px;
+  margin-bottom:3px;
+}
+
+.nav-btn.active{
+  color:#c9a84e;
+}
+
+.rank-list{
+  display:grid;
+  gap:7px;
+}
+
+.rank-item{
+  padding:10px;
+  border:1px solid #222e3a;
+  border-radius:10px;
+  background:#0b1118;
+}
+
+.rank-item.active{
+  border-color:#c9a84e;
+}
+
+.rank-item b{
+  display:block;
+}
+
+.rank-item small{
+  color:#7f8b99;
+}
+
+.achievement{
+  padding:12px;
+  background:#0b1118;
+  border:1px solid #222e3a;
+  border-radius:12px;
+  margin-bottom:8px;
+}
+
+.achievement b{
+  display:block;
+  margin-bottom:4px;
+}
+
+.achievement span{
+  color:#7f8b99;
+  font-size:11px;
+}
 </style>
 </head>
 
 <body>
 
-<main class="app">
+<div class="app">
 
-<header class="top">
-<div>
-<div class="gold">🎖 ВОЕННАЯ КАРЬЕРА</div>
-<h1>Путь офицера</h1>
-<div class="muted">СЛУЖИТЬ • РАЗВИВАТЬСЯ • ПОБЕЖДАТЬ</div>
+  <div class="header">
+    <div class="logo">🎖 ПУТЬ ОФИЦЕРА</div>
+    <div class="subtitle">СЛУЖИТЬ • РАЗВИВАТЬСЯ • ПОБЕЖДАТЬ</div>
+  </div>
+
+  <!-- ГЛАВНАЯ -->
+  <section id="homeTab" class="tab-content active">
+
+    <div class="card">
+      <div class="profile">
+        <div class="avatar">🎖</div>
+        <div>
+          <h2>Военнослужащий</h2>
+          <div class="muted">
+            Уровень <span id="level">1</span>
+          </div>
+          <div id="rank">Рядовой</div>
+          <div id="place" class="location">Казарма · 1-е отделение</div>
+        </div>
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <div class="stat-title">⚡ ЭНЕРГИЯ</div>
+          <div class="stat-value">
+            <span id="energy">100</span>/<span id="maxEnergy">100</span>
+          </div>
+          <div class="progress">
+            <div id="energyBar"></div>
+          </div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-title">💰 КРЕДИТЫ</div>
+          <div class="stat-value" id="credits">12 450</div>
+          <div class="muted">+120 / мин</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-title">⭐ ПРЕСТИЖ</div>
+          <div class="stat-value">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-title">🏅 МЕДАЛИ</div>
+          <div class="stat-value">0</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">🎯 ТЕКУЩАЯ СЛУЖБА</div>
+
+      <div class="muted" id="description">
+        Первые шаги к большой цели.
+      </div>
+
+      <div style="margin-top:12px">
+        Опыт:
+        <b><span id="rankProgress">0</span> / <span id="rankNeed">100</span></b>
+      </div>
+
+      <div class="progress">
+        <div id="rankBar"></div>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <button id="clickButton" class="main-button">
+        🏅 ТРЕНИРОВКА
+      </button>
+    </div>
+
+  </section>
+
+
+  <!-- КАРТА -->
+  <section id="mapTab" class="tab-content">
+
+    <div class="card">
+      <div class="section-title">🗺 КАРТА СЛУЖБЫ</div>
+
+      <div class="muted">
+        Продвигайся по карьерной лестнице и открывай новые
+        военные объекты.
+      </div>
+
+      <div style="margin-top:10px">
+        Текущее место:
+        <b id="mapCurrentRank">Рядовой</b>
+      </div>
+    </div>
+
+    <div class="card">
+
+      <div class="map">
+
+        <div class="map-line"></div>
+
+        <!-- 1 -->
+        <div class="location-card open current">
+
+          <div class="location-dot">🏕️</div>
+
+          <div class="location-info">
+            <div class="location-name">Казарма</div>
+
+            <div class="location-desc">
+              Первое место службы. Здесь начинаются
+              тренировки и первые задания.
+            </div>
+
+            <div class="location-status">
+              ✓ ОТКРЫТО
+            </div>
+
+            <div class="mission">
+              <b>🎯 Служебная тренировка</b>
+              <span>Получить опыт и кредиты</span>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- 2 -->
+        <div class="location-card open">
+
+          <div class="location-dot">🏢</div>
+
+          <div class="location-info">
+            <div class="location-name">
+              Штаб подразделения
+            </div>
+
+            <div class="location-desc">
+              Первые командные задачи и управление
+              личным составом.
+            </div>
+
+            <div class="location-status">
+              ✓ ОТКРЫВАЕТСЯ: ЕФРЕЙТОР
+            </div>
+
+            <div class="mission">
+              <b>📋 Приказ командира</b>
+              <span>Выполнить первое служебное поручение</span>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- 3 -->
+        <div class="location-card">
+
+          <div class="location-dot">🎯</div>
+
+          <div class="location-info">
+            <div class="location-name">
+              Военный полигон
+            </div>
+
+            <div class="location-desc">
+              Боевые тренировки, испытания и специальные
+              задания.
+            </div>
+
+            <div class="location-status">
+              🔒 ОТКРЫВАЕТСЯ: МЛАДШИЙ СЕРЖАНТ
+            </div>
+
+            <div class="mission">
+              <b>🎯 Тактическая подготовка</b>
+              <span>Новая миссия будет доступна после открытия</span>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- 4 -->
+        <div class="location-card">
+
+          <div class="location-dot">🎖</div>
+
+          <div class="location-info">
+            <div class="location-name">
+              Офицерская часть
+            </div>
+
+            <div class="location-desc">
+              Здесь начинается настоящая офицерская
+              карьера.
+            </div>
+
+            <div class="location-status">
+              🔒 ОТКРЫВАЕТСЯ: ПРАПОРЩИК
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- 5 -->
+        <div class="location-card">
+
+          <div class="location-dot">🛰️</div>
+
+          <div class="location-info">
+            <div class="location-name">
+              Командный центр
+            </div>
+
+            <div class="location-desc">
+              Управление крупными операциями и
+              стратегическими задачами.
+            </div>
+
+            <div class="location-status">
+              🔒 ОТКРЫВАЕТСЯ: ЛЕЙТЕНАНТ
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- 6 -->
+        <div class="location-card">
+
+          <div class="location-dot">🏛️</div>
+
+          <div class="location-info">
+            <div class="location-name">
+              Главный штаб
+            </div>
+
+            <div class="location-desc">
+              Высший уровень военного управления.
+            </div>
+
+            <div class="location-status">
+              🔒 ОТКРЫВАЕТСЯ: ПОЛКОВНИК
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- 7 -->
+        <div class="location-card">
+
+          <div class="location-dot">⭐</div>
+
+          <div class="location-info">
+            <div class="location-name">
+              Высшее командование
+            </div>
+
+            <div class="location-desc">
+              Финальный этап пути от рядового
+              до генерала армии.
+            </div>
+
+            <div class="location-status">
+              🔒 ФИНАЛЬНАЯ ЛОКАЦИЯ
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ШТАБ -->
+  <section id="hqTab" class="tab-content">
+
+    <div class="card">
+      <div class="section-title">🏢 ШТАБ</div>
+
+      <div class="muted">
+        Развивай инфраструктуру и увеличивай
+        пассивный доход.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">🏕️ Казарма</div>
+
+      <div class="muted">
+        Базовое здание подразделения.
+      </div>
+
+      <div style="margin-top:10px">
+        💰 Доход: <b>+2 / мин</b>
+      </div>
+
+      <div style="margin-top:8px">
+        Уровень: <b>1</b>
+      </div>
+
+      <button class="main-button" style="margin-top:12px">
+        УЛУЧШИТЬ
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="section-title">🎯 Тренировочный центр</div>
+
+      <div class="muted">
+        Повышает эффективность подготовки.
+      </div>
+
+      <div style="margin-top:10px">
+        💰 Доход: <b>+8 / мин</b>
+      </div>
+
+      <div style="margin-top:8px">
+        🔒 Требуется: Младший сержант
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">🛰️ Командный центр</div>
+
+      <div class="muted">
+        Центр управления подразделением.
+      </div>
+
+      <div style="margin-top:10px">
+        💰 Доход: <b>+25 / мин</b>
+      </div>
+
+      <div style="margin-top:8px">
+        🔒 Требуется: Лейтенант
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ЗВАНИЯ -->
+  <section id="ranksTab" class="tab-content">
+
+    <div class="card">
+      <div class="section-title">🎖 КАРЬЕРНАЯ ЛЕСТНИЦА</div>
+
+      <div class="muted">
+        Каждое повышение открывает новые возможности.
+      </div>
+    </div>
+
+    <div id="ranks" class="rank-list"></div>
+
+  </section>
+
+
+  <!-- ДОСТИЖЕНИЯ -->
+  <section id="achievementsTab" class="tab-content">
+
+    <div class="card">
+      <div class="section-title">🏆 ДОСТИЖЕНИЯ</div>
+
+      <div class="muted">
+        Выполняй задания и собирай военные награды.
+      </div>
+    </div>
+
+    <div class="achievement">
+      <b>🎖 Первый шаг</b>
+      <span>Получить первое звание после Рядового</span>
+    </div>
+
+    <div class="achievement">
+      <b>⚡ Энергия службы</b>
+      <span>Выполнить 100 тренировок</span>
+    </div>
+
+    <div class="achievement">
+      <b>💰 Первый капитал</b>
+      <span>Накопить 10 000 кредитов</span>
+    </div>
+
+    <div class="achievement">
+      <b>🏅 Ветеран</b>
+      <span>Достичь звания Старший сержант</span>
+    </div>
+
+    <div class="achievement">
+      <b>🎖 Офицер</b>
+      <span>Получить первое офицерское звание</span>
+    </div>
+
+    <div class="achievement">
+      <b>⭐ Высшее командование</b>
+      <span>Достичь звания Генерал армии</span>
+    </div>
+
+  </section>
+
 </div>
-<div class="level">УРОВЕНЬ<b id="level">1</b></div>
-</header>
 
 
-<section id="home" class="tab active">
+<!-- НИЖНЕЕ МЕНЮ -->
+<nav class="bottom-nav">
 
-<div class="card">
-<div class="muted">ВАШ ПРОФИЛЬ</div>
-<h2 id="rank">Рядовой</h2>
-<div class="gold">Курсант</div>
-<p>ОПЫТ: <b id="totalClicks">0</b> / <span id="rankNeed">100</span></p>
-<div class="progress"><i id="rankBar"></i></div>
-<span id="rankProgress" class="hidden">0</span>
-</div>
+  <button class="nav-btn active" data-tab="homeTab">
+    <span>🏠</span>
+    Главная
+  </button>
 
-<div class="grid">
+  <button class="nav-btn" data-tab="mapTab">
+    <span>🗺️</span>
+    Карта
+  </button>
 
-<div class="stat">
-<small>⚡ ЭНЕРГИЯ</small>
-<b><span id="energy">100</span>/<span id="maxEnergy">100</span></b>
-<div class="progress"><i id="energyBar"></i></div>
-<span id="maxEnergy2" class="hidden">100</span>
-</div>
+  <button class="nav-btn" data-tab="hqTab">
+    <span>🏢</span>
+    Штаб
+  </button>
 
-<div class="stat">
-<small>💰 КРЕДИТЫ</small>
-<b>12 450</b>
-<small>+120 / мин</small>
-</div>
+  <button class="nav-btn" data-tab="ranksTab">
+    <span>🎖️</span>
+    Звания
+  </button>
 
-<div class="stat">
-<small>⭐ ПРЕСТИЖ</small>
-<b>0</b>
-</div>
-
-<div class="stat">
-<small>🏅 МЕДАЛИ</small>
-<b>0</b>
-</div>
-
-</div>
-
-<div class="card">
-<div class="muted">ТЕКУЩАЯ ЛОКАЦИЯ</div>
-<h2 id="place">Казарма</h2>
-<div id="description" class="gold">Учебный корпус</div>
-</div>
-
-<div class="card">
-<div class="muted">СЛУЖЕБНАЯ ТРЕНИРОВКА</div>
-<h2>Подготовка бойца</h2>
-<p class="muted">Получайте опыт и продвигайтесь по службе.</p>
-<button id="clickButton" class="big">🎖 ТРЕНИРОВКА</button>
-<div id="nextMini" class="muted"></div>
-</div>
-
-<div class="card">
-<div class="muted">📋 ЗАДАНИЯ</div>
-<div class="item">🎯 Провести 10 тренировок</div>
-<div class="item">💰 Заработать 1 000 кредитов</div>
-<div class="item">🏅 Получить достижение</div>
-</div>
-
-</section>
-
-
-<section id="map" class="tab">
-
-<div class="card">
-<div class="gold">🗺 КАРТА</div>
-<h2>Путь службы</h2>
-<p class="muted">Открывайте новые места по мере продвижения.</p>
-</div>
-
-<div class="card">
-<div class="item">📍 <b>Казарма</b><br><span class="gold">Доступно</span></div>
-<div class="item">🏕 <b>Учебный полигон</b><br><span class="muted">Следующий этап</span></div>
-<div class="item lock">🏢 <b>Штаб части</b><br><span class="muted">Заблокировано</span></div>
-<div class="item lock">🏙 <b>Офицерский городок</b><br><span class="muted">Заблокировано</span></div>
-<div class="item lock">⭐ <b>Кремлёвский кабинет</b><br><span class="muted">Высший этап</span></div>
-</div>
-
-</section>
-
-
-<section id="base" class="tab">
-
-<div class="card">
-<div class="gold">🏢 ШТАБ</div>
-<h2>Развитие базы</h2>
-<p class="muted">Улучшения увеличивают пассивный доход.</p>
-</div>
-
-<div class="card">
-<div class="item">🏠 <b>Штаб</b><br><span class="muted">Уровень 1 · +2 кредита/мин</span></div>
-<div class="item">🏋️ <b>Тренировочный центр</b><br><span class="muted">Уровень 1 · +8 кредитов/мин</span></div>
-<div class="item">🎯 <b>Полигон</b><br><span class="muted">Уровень 1 · +10 кредитов/мин</span></div>
-<div class="item lock">📡 <b>Командный центр</b><br><span class="muted">Заблокировано</span></div>
-</div>
-
-<div class="card">
-<div class="muted">ПАССИВНЫЙ ДОХОД</div>
-<h2 class="gold">+120 кредитов / мин</h2>
-</div>
-
-</section>
-
-
-<section id="ranksTab" class="tab">
-
-<div class="card">
-<div class="gold">🎖 ЗВАНИЯ</div>
-<h2>Военная карьера</h2>
-<p class="muted">Ваша карьерная лестница.</p>
-</div>
-
-<div class="card" id="ranks">
-
-<div class="item">🪖 Рядовой</div>
-<div class="item">🎖 Ефрейтор</div>
-<div class="item">🎖 Младший сержант</div>
-<div class="item">🎖 Сержант</div>
-<div class="item">🎖 Старший сержант</div>
-<div class="item">🎖 Прапорщик</div>
-<div class="item">⭐ Младший лейтенант</div>
-<div class="item">⭐ Лейтенант</div>
-<div class="item">⭐ Старший лейтенант</div>
-<div class="item">⭐ Капитан</div>
-<div class="item lock">🏅 Майор</div>
-<div class="item lock">🏅 Подполковник</div>
-<div class="item lock">🏅 Полковник</div>
-<div class="item lock">⭐ Генерал-майор</div>
-<div class="item lock">⭐ Генерал-лейтенант</div>
-<div class="item lock">⭐ Генерал-полковник</div>
-<div class="item lock">👑 Генерал армии</div>
-
-</div>
-</section>
-
-
-<section id="achievements" class="tab">
-
-<div class="card">
-<div class="gold">🏆 ДОСТИЖЕНИЯ</div>
-<h2>Награды службы</h2>
-<p class="muted">Ваши будущие медали и достижения.</p>
-</div>
-
-<div class="card">
-<div class="item">🥇 <b>Первый шаг</b><br><span class="muted">Начать службу</span></div>
-<div class="item">🎯 <b>Тренировка</b><br><span class="muted">10 тренировок</span></div>
-<div class="item">💰 <b>Первый капитал</b><br><span class="muted">10 000 кредитов</span></div>
-<div class="item">⭐ <b>Продвижение</b><br><span class="muted">Первое повышение</span></div>
-<div class="item lock">🏆 <b>Офицер</b><br><span class="muted">Офицерское звание</span></div>
-</div>
-
-</section>
-
-<span id="currentMini" class="hidden"></span>
-
-</main>
-
-
-<nav class="nav">
-
-<button class="active" data-tab="home">
-<span>🏠</span>Главная
-</button>
-
-<button data-tab="map">
-<span>🗺</span>Карта
-</button>
-
-<button data-tab="base">
-<span>🏢</span>Штаб
-</button>
-
-<button data-tab="ranksTab">
-<span>🎖</span>Звания
-</button>
-
-<button data-tab="achievements">
-<span>🏆</span>Достижения
-</button>
+  <button class="nav-btn" data-tab="achievementsTab">
+    <span>🏆</span>
+    Достижения
+  </button>
 
 </nav>
 
 
 <script>
 
-const tg=window.Telegram&&window.Telegram.WebApp;
+const buttons = document.querySelectorAll(".nav-btn");
+const tabs = document.querySelectorAll(".tab-content");
 
-if(tg){
- tg.ready();
- tg.expand();
-}
+buttons.forEach(function(button){
 
-const buttons=document.querySelectorAll(".nav button");
-const tabs=document.querySelectorAll(".tab");
+  button.addEventListener("click",function(){
 
-buttons.forEach(function(btn){
+    const id = button.dataset.tab;
 
- btn.addEventListener("click",function(){
+    tabs.forEach(function(tab){
+      tab.classList.remove("active");
+    });
 
-  const id=btn.dataset.tab;
+    buttons.forEach(function(btn){
+      btn.classList.remove("active");
+    });
 
-  tabs.forEach(function(tab){
-   tab.classList.remove("active");
+    const target = document.getElementById(id);
+
+    if(target){
+      target.classList.add("active");
+    }
+
+    button.classList.add("active");
+
+    window.scrollTo(0,0);
+
   });
-
-  const target=document.getElementById(id);
-
-  if(target){
-   target.classList.add("active");
-  }
-
-  buttons.forEach(function(b){
-   b.classList.remove("active");
-  });
-
-  btn.classList.add("active");
-
-  window.scrollTo(0,0);
-
- });
 
 });
+
+
+const mapRank = document.getElementById("mapCurrentRank");
+
+if(mapRank){
+  const rankElement = document.getElementById("rank");
+
+  if(rankElement){
+    mapRank.textContent = rankElement.textContent;
+  }
+}
 
 </script>
 
