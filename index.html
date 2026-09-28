@@ -1,126 +1,29 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  >
-  <title>Путь офицера</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Путь офицера</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<div class="app">
-
-  <!-- ========================= -->
-  <!-- ВЕРХ -->
-  <!-- ========================= -->
-
-  <header class="top">
-    <div>
-      <div class="eyebrow">🎖 ВОЕННАЯ КАРЬЕРА</div>
-
-      <h1>Путь офицера</h1>
-
-      <div class="subtitle">
-        СЛУЖИТЬ • РАЗВИВАТЬСЯ • ПОБЕЖДАТЬ
-      </div>
-    </div>
-
-    <div class="level">
-      УРОВЕНЬ
-      <span id="level">1</span>
-    </div>
-  </header>
-
-
-  <!-- ===================================================== -->
-  <!-- ВКЛАДКА 1 — ГЛАВНАЯ -->
-  <!-- ===================================================== -->
-
-  <section class="tab-page" id="tab-home">
-
-    <!-- Профиль -->
-
-    <div class="box profile">
-
-      <div class="profile-main">
-
-        <div class="avatar">
-          🎖️
-        </div>
-
-        <div>
-          <div class="small-label">
-            ВАШ ПРОФИЛЬ
-          </div>
-
-          <h2>Курсант</h2>
-
-          <p>
-            Начало военной карьеры
-          </p>
-        </div>
-
-      </div>
-
-
-      <div class="xp-info">
-
-        <div>
-          <span>ОПЫТ</span>
-
-          <b>
-            <span id="totalClicks">0</span>
-            /
-            <span id="rankNeed">100</span>
-          </b>
-        </div>
-
-        <div class="bar progress">
-          <div id="rankBar"></div>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- Ресурсы -->
-
-    <div class="resources">
-
-      <div class="box resource">
-
-        <div class="resource-icon">
-          ⚡
-        </div>
-
-        <div>
-          <small>ЭНЕРГИЯ</small>
-
-          <strong>
-            <span id="energy">100</span>/<span id="maxEnergy">100</span>
-          </strong>
-
-          <em>
-            +1 каждые 10 сек
-          </em>
-        </div>
-
-      </div>
-
-
-      <div class="box resource">
-
-        <div class="resource-icon">
-          💰
-        </div>
-
-        <div>
-          <small>КРЕДИТЫ
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#080b10;color:#f4f6f8;
+ font-family:Arial,sans-serif;
+}
+.app{max-width:720px;margin:auto;padding:18px 14px 90px}
+h1{margin:0;font-size:28px}
+p{margin:5px 0}
+.muted{color:#8d99a8}
+.gold{color:#e5bd63}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.level{
+ background:#151d28;border:1px solid #303b49;border-radius:12px;
+ padding:8px 14px;text-align:center;color:#9aa6b5
+}
+.level b{display:block;font-size:22px;color:#f0cc70}
+.card{
+ background:linear-gradient(145deg,#151d28,#0e141c);
+ border:1px solid #293441;border-radius:18px;
+ padding:16
