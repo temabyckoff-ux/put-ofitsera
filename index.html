@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0f16">
+  <title>Путь офицера</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">ВОЕННАЯ КАРЬЕРА</div>
+        <h1>🎖️ ПУТЬ ОФИЦЕРА</h1>
+      </div>
+      <div class="profile-badge">
+        <span>⭐</span>
+        <strong id="level">Уровень 1</strong>
+      </div>
+    </header>
+
+    <main>
+      <section class="profile-card">
+        <div class="profile-main">
+          <div class="avatar">★</div>
+          <div class="profile-copy">
+            <div class="muted">Текущее звание</div>
+            <h2 id="rank">Рядовой</h2>
+            <div class="muted" id="rankNext">До следующего звания: 500</div>
+          </div>
+        </div>
+        <div class="progress"><span id="rankProgress"></span></div>
+        <div class="profile-stats">
+          <span>Тренировок: <b id="clicks">0</b></span>
+          <span>Доход: <b id="incomePerMinute">+0 / мин</b></span>
+        </div>
+      </section>
+
+      <section class="resources">
+        <div class="resource"><span>⚡</span><small>Энергия</small><b id="energy">100/100</b></div>
+        <div class="resource"><span>💰</span><small>Кредиты</small><b id="credits">12 450</b></div>
+        <div class="resource"><span>💠</span><small>Престиж</small><b id="prestige">0</b></div>
+        <div class="resource"><span>🏅</span><small>Медали</small><b id="medals">0</b></div>
+      </section>
+
+      <div id="notice" class="notice" aria-live="polite">Добро пожаловать, офицер!</div>
+
+      <section data-screen-panel="home">
+        <div class="section-title">
+          <div><span class="eyebrow">ГЛАВНАЯ</span><h3>Личный штаб</h3></div>
+        </div>
+
+        <section class="hero-card">
+          <div>
+            <div class="eyebrow">ЕЖЕДНЕВНАЯ ПОДГОТОВКА</div>
+            <h3>Подготовить подразделение</h3>
+            <p>Каждая тренировка приближает вас к следующему званию.</p>
+          </div>
+          <button id="trainBtn" class="primary-btn">⚔️ Тренировка</button>
+        </section>
+
+        <section class="card daily-card">
+          <div class="card-head">
+            <div>
+              <div class="eyebrow">ЕЖЕДНЕВНОЕ ЗАДАНИЕ</div>
+              <h3>10 тренировок</h3>
+            </div>
+            <strong id="dailyProgress">0/10</strong>
+          </div>
+          <div class="progress"><span id="dailyBar"></span></div>
+          <div class="small-row"><span>Награда</span><span>💰 3 000 · 💠 10 · 🏅 1</span></div>
+          <button id="dailyClaim" class="gold-btn" disabled>Забрать бонус</button>
+        </section>
+
+        <div class="section-title"><h3>Активная служба</h3><span class="muted">Миссии</span></div>
+        <div id="missions" class="stack"></div>
+      </section>
+
+      <section data-screen-panel="map" hidden>
+        <div class="section-title"><div><span class="eyebrow">КАРТА</span><h3>Военные зоны</h3></div></div>
+        <div class="map-card">
+          <div class="map-grid"></div>
+          <div class="map-center">★<small>ШТАБ</small></div>
+        </div>
+        <div id="locations" class="stack"></div>
+      </section>
+
+      <section data-screen-panel="hq" hidden>
+        <div class="section-title"><div><span class="eyebrow">ШТАБ</span><h3>Инфраструктура</h3></div></div>
+        <section class="card">
+          <div class="card-head">
+            <div><div class="muted">Пассивный доход</div><h3 id="incomePerMinute">+0 / мин</h3></div>
+            <span class="pill">АВТО</span>
+          </div>
+          <p class="muted">Здания приносят кредиты автоматически, даже когда вы не выполняете миссии.</p>
+        </section>
+        <div id="buildings" class="stack"></div>
+      </section>
+
+      <section data-screen-panel="ranks" hidden>
+        <div class="section-title"><div><span class="eyebrow">КАРЬЕРА</span><h3>Звания</h3></div></div>
+        <div class="rank-list">
+          <div class="card"><div class="card-title">1. Рядовой</div><div class="muted">Старт карьеры</div></div>
+          <div class="card"><div class="card-title">2. Ефрейтор</div><div class="muted">500 тренировок</div></div>
+          <div class="card"><div class="card-title">3. Младший сержант</div><div class="muted">1 000 тренировок</div></div>
+          <div class="card"><div class="card-title">4. Сержант</div><div class="muted">2 000 тренировок</div></div>
+          <div class="card"><div class="card-title">5. Старший сержант</div><div class="muted">3 000 тренировок</div></div>
+          <div class="card"><div class="card-title">6. Прапорщик</div><div class="muted">5 000 тренировок</div></div>
+          <div class="card"><div class="card-title">7. Младший лейтенант</div><div class="muted">7 000 тренировок</div></div>
+          <div class="card"><div class="card-title">8. Лейтенант</div><div class="muted">10 000 тренировок</div></div>
+          <div class="card"><div class="card-title">9. Старший лейтенант</div><div class="muted">14 000 тренировок</div></div>
+          <div class="card"><div class="card-title">10. Капитан</div><div class="muted">18 000 тренировок</div></div>
+          <div class="card"><div class="card-title">11. Майор</div><div class="muted">23 000 тренировок</div></div>
+          <div class="card"><div class="card-title">12. Подполковник</div><div class="muted">30 000 тренировок</div></div>
+          <div class="card"><div class="card-title">13. Полковник</div><div class="muted">40 000 тренировок</div></div>
+          <div class="card"><div class="card-title">14. Генерал-майор</div><div class="muted">55 000 тренировок</div></div>
+          <div class="card"><div class="card-title">15. Генерал-лейтенант</div><div class="muted">70 000 тренировок</div></div>
+          <div class="card"><div class="card-title">16. Генерал-полковник</div><div class="muted">90 000 тренировок</div></div>
+          <div class="card"><div class="card-title">17. Генерал армии</div><div class="muted">120 000 тренировок</div></div>
+        </div>
+      </section>
+
+      <section data-screen-panel="rewards" hidden>
+        <div class="section-title"><div><span class="eyebrow">НАГРАДЫ</span><h3>Достижения</h3></div></div>
+        <div id="achievements" class="stack"></div>
+
+        <div class="section-title"><div><span class="eyebrow">АРСЕНАЛ ОФИЦЕРА</span><h3>Магазин</h3></div></div>
+        <div id="shop" class="stack"></div>
+
+        <div class="section-title"><div><span class="eyebrow">КОЛЛЕКЦИЯ</span><h3>Личные предметы</h3></div></div>
+        <div id="collection" class="stack"></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button data-screen="home" class="active"><span>⌂</span>Главная</button>
+      <button data-screen="map"><span>⌖</span>Карта</button>
+      <button data-screen="hq"><span>▣</span>Штаб</button>
+      <button data-screen="ranks"><span>★</span>Звания</button>
+      <button data-screen="rewards"><span>🏅</span>Награды</button>
+    </nav>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
