@@ -1,326 +1,126 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Путь офицера</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+  <title>Путь офицера</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<main class="app">
+<div class="app">
 
-<header class="top">
-  <div>
-    <div class="eyebrow">🎖️ ВОЕННАЯ КАРЬЕРА</div>
-    <h1>Путь офицера</h1>
-    <div class="subtitle">СЛУЖИТЬ • РАЗВИВАТЬСЯ • ПОБЕЖДАТЬ</div>
-  </div>
+  <!-- ========================= -->
+  <!-- ВЕРХ -->
+  <!-- ========================= -->
 
-  <div class="level">
-    Уровень
-    <span id="level">1</span>
-  </div>
-</header>
-
-
-<section class="profile box">
-
-  <div class="profile-main">
-    <div class="avatar">🪖</div>
-
+  <header class="top">
     <div>
-      <div class="small-label">ВАШ ПРОФИЛЬ</div>
-      <h2>Курсант</h2>
-      <p id="rank">Рядовой</p>
-    </div>
-  </div>
+      <div class="eyebrow">🎖 ВОЕННАЯ КАРЬЕРА</div>
 
-  <div class="xp-info">
-    <div>
-      <span>ОПЫТ</span>
-      <b><span id="rankProgress">0</span> / <span id="rankNeed">100</span></b>
-    </div>
+      <h1>Путь офицера</h1>
 
-    <div class="bar progress">
-      <div id="rankBar"></div>
-    </div>
-  </div>
-
-</section>
-
-
-<section class="resources">
-
-  <div class="resource box">
-    <span class="resource-icon">⚡</span>
-    <div>
-      <small>ЭНЕРГИЯ</small>
-      <strong>
-        <span id="energy">100</span> /
-        <span id="maxEnergy">100</span>
-      </strong>
-    </div>
-  </div>
-
-  <div class="resource box">
-    <span class="resource-icon">💰</span>
-    <div>
-      <small>КРЕДИТЫ</small>
-      <strong id="credits">12 450</strong>
-      <em>+120 / мин</em>
-    </div>
-  </div>
-
-  <div class="resource box">
-    <span class="resource-icon">⭐</span>
-    <div>
-      <small>ПРЕСТИЖ</small>
-      <strong id="prestige">0</strong>
-    </div>
-  </div>
-
-  <div class="resource box">
-    <span class="resource-icon">🏅</span>
-    <div>
-      <small>МЕДАЛИ</small>
-      <strong id="medals">0</strong>
-    </div>
-  </div>
-
-</section>
-
-
-<section class="scene">
-
-  <div class="place">
-    📍 <span id="place">Казарма · 1-е отделение</span>
-  </div>
-
-  <div class="scene-character">
-    🪖
-  </div>
-
-  <div class="rank-card">
-
-    <div class="insignia" id="insignia">
-      <span class="star">★</span>
-      <div class="chevrons">
-        <i></i>
+      <div class="subtitle">
+        СЛУЖИТЬ • РАЗВИВАТЬСЯ • ПОБЕЖДАТЬ
       </div>
     </div>
 
-    <div>
-      <div class="small-label">ТЕКУЩЕЕ ЗВАНИЕ</div>
-      <h2 id="rank">Рядовой</h2>
-      <p id="description">Первые шаги к большой цели.</p>
+    <div class="level">
+      УРОВЕНЬ
+      <span id="level">1</span>
     </div>
-
-  </div>
-
-</section>
+  </header>
 
 
-<section class="main-action box">
+  <!-- ===================================================== -->
+  <!-- ВКЛАДКА 1 — ГЛАВНАЯ -->
+  <!-- ===================================================== -->
 
-  <div class="action-title">
-    <span>⚔️</span>
+  <section class="tab-page" id="tab-home">
 
-    <div>
-      <h2>Тренировка</h2>
-      <p>Получайте опыт и кредиты</p>
-    </div>
-  </div>
+    <!-- Профиль -->
 
-  <button class="click-button" id="clickButton">
-    <span class="click-star">★</span>
-    <b>ТРЕНИРОВКА</b>
-    <small>-1 энергия</small>
-  </button>
+    <div class="box profile">
 
-  <div class="hint">
-    ⚡ Энергия восстанавливается на 1 единицу каждые 10 секунд
-  </div>
+      <div class="profile-main">
 
-</section>
+        <div class="avatar">
+          🎖️
+        </div>
 
+        <div>
+          <div class="small-label">
+            ВАШ ПРОФИЛЬ
+          </div>
 
-<section class="missions">
+          <h2>Курсант</h2>
 
-  <div class="section-title">
-    <h2>📋 Задания</h2>
-    <span>Сегодня</span>
-  </div>
+          <p>
+            Начало военной карьеры
+          </p>
+        </div>
 
-  <div class="mission box">
-
-    <div class="mission-icon">🎯</div>
-
-    <div class="mission-text">
-      <b>Пройти тренировку</b>
-      <span>Выполнить 10 тренировок</span>
-
-      <div class="mini-progress">
-        <div></div>
       </div>
-    </div>
-
-    <strong>+250 💰</strong>
-
-  </div>
 
 
-  <div class="mission box">
+      <div class="xp-info">
 
-    <div class="mission-icon">⭐</div>
+        <div>
+          <span>ОПЫТ</span>
 
-    <div class="mission-text">
-      <b>Первый шаг</b>
-      <span>Получить новое звание</span>
+          <b>
+            <span id="totalClicks">0</span>
+            /
+            <span id="rankNeed">100</span>
+          </b>
+        </div>
 
-      <div class="mini-progress">
-        <div></div>
+        <div class="bar progress">
+          <div id="rankBar"></div>
+        </div>
+
       </div>
+
     </div>
 
-    <strong>+500 💰</strong>
 
-  </div>
+    <!-- Ресурсы -->
 
-</section>
+    <div class="resources">
 
+      <div class="box resource">
 
-<section class="daily box">
+        <div class="resource-icon">
+          ⚡
+        </div>
 
-  <div class="daily-icon">🎁</div>
+        <div>
+          <small>ЭНЕРГИЯ</small>
 
-  <div>
-    <div class="small-label">ЕЖЕДНЕВНЫЙ БОНУС</div>
-    <h2>Награда за службу</h2>
-    <p>Заходите каждый день и получайте кредиты.</p>
-  </div>
+          <strong>
+            <span id="energy">100</span>/<span id="maxEnergy">100</span>
+          </strong>
 
-  <button class="daily-button">
-    ЗАБРАТЬ
-  </button>
+          <em>
+            +1 каждые 10 сек
+          </em>
+        </div>
 
-</section>
-
-
-<section class="headquarters box">
-
-  <div class="section-title">
-    <h2>🏢 Штаб</h2>
-    <span>Развитие</span>
-  </div>
-
-  <div class="building-grid">
-
-    <div class="building">
-      <span>🏢</span>
-      <b>Штаб</b>
-      <small>+2 💰 / мин</small>
-    </div>
-
-    <div class="building">
-      <span>🏋️</span>
-      <b>Тренировочный центр</b>
-      <small>+8 💰 / мин</small>
-    </div>
-
-    <div class="building">
-      <span>🎯</span>
-      <b>Полигон</b>
-      <small>+15 💰 / мин</small>
-    </div>
-
-    <div class="building">
-      <span>⭐</span>
-      <b>Командный центр</b>
-      <small>+25 💰 / мин</small>
-    </div>
-
-  </div>
-
-</section>
+      </div>
 
 
-<section class="career box">
+      <div class="box resource">
 
-  <div class="section-title">
-    <h2>🎖️ Карьера</h2>
-    <span>Звания</span>
-  </div>
+        <div class="resource-icon">
+          💰
+        </div>
 
-  <div class="career-preview">
-
-    <div class="mini-rank" id="currentMini"></div>
-
-    <div class="career-arrow">→</div>
-
-    <div class="mini-rank" id="nextMini"></div>
-
-  </div>
-
-  <p class="career-hint">
-    Повышайте опыт, чтобы получить новое звание.
-  </p>
-
-</section>
-
-
-<section class="quick-menu">
-
-  <button>
-    🗺️
-    <span>Карта</span>
-  </button>
-
-  <button>
-    🏢
-    <span>Штаб</span>
-  </button>
-
-  <button>
-    🎖️
-    <span>Звания</span>
-  </button>
-
-  <button>
-    🏆
-    <span>Достижения</span>
-  </button>
-
-</section>
-
-
-<section class="stats box">
-
-  <div>
-    <span>Всего тренировок</span>
-    <b id="totalClicks">0</b>
-  </div>
-
-  <div>
-    <span>Макс. энергия</span>
-    <b id="maxEnergy2">100</b>
-  </div>
-
-  <div>
-    <span>Восстановление</span>
-    <b>+1 / 10 сек.</b>
-  </div>
-
-</section>
-
-
-<section class="ranks" id="ranks"></section>
-
-</main>
-
-
-<script src="app.js"></script>
-
-</body>
-</html>
+        <div>
+          <small>КРЕДИТЫ
