@@ -3,12 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
 <title>Путь офицера</title>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+ box-sizing:border-box;
+}
 
 :root{
  --bg:#080b10;
@@ -20,12 +23,13 @@
  --text:#f4f6f8;
  --muted:#8d99a8;
  --green:#35c979;
- --blue:#4b8cff;
 }
 
-html,body{
+html,
+body{
  margin:0;
  padding:0;
+ min-height:100%;
  background:var(--bg);
  color:var(--text);
  font-family:Arial,Helvetica,sans-serif;
@@ -39,7 +43,7 @@ body{
  width:100%;
  max-width:720px;
  margin:auto;
- padding:18px 14px 95px;
+ padding:18px 14px 100px;
 }
 
 .top{
@@ -158,11 +162,6 @@ h2{
  border-radius:20px;
 }
 
-.location{
- color:var(--green);
- font-size:13px;
-}
-
 .big-button{
  width:100%;
  border:0;
@@ -249,10 +248,23 @@ h2{
  font-size:10px;
 }
 
+.compat{
+ display:none !important;
+}
+
 @media(max-width:380px){
- h1{font-size:24px}
- .app{padding-left:10px;padding-right:10px}
- .profile{grid-template-columns:1fr}
+ h1{
+  font-size:24px;
+ }
+
+ .app{
+  padding-left:10px;
+  padding-right:10px;
+ }
+
+ .profile{
+  grid-template-columns:1fr;
+ }
 }
 </style>
 </head>
@@ -261,33 +273,58 @@ h2{
 
 <main class="app">
 
+<!-- ВЕРХ -->
+
 <header class="top">
 
 <div>
-<div class="eyebrow">🎖 ВОЕННАЯ КАРЬЕРА</div>
-<h1>Путь офицера</h1>
-<div class="subtitle">СЛУЖИТЬ • РАЗВИВАТЬСЯ • ПОБЕЖДАТЬ</div>
+
+<div class="eyebrow">
+🎖 ВОЕННАЯ КАРЬЕРА
+</div>
+
+<h1>
+Путь офицера
+</h1>
+
+<div class="subtitle">
+СЛУЖИТЬ • РАЗВИВАТЬСЯ • ПОБЕЖДАТЬ
+</div>
+
 </div>
 
 <div class="level">
+
 УРОВЕНЬ
-<span id="level">1</span>
+
+<span id="level">
+1
+</span>
+
 </div>
 
 </header>
 
 
-<!-- ==================== ГЛАВНАЯ ==================== -->
+<!-- ========================= -->
+<!-- ГЛАВНАЯ -->
+<!-- ========================= -->
 
 <section id="tab-home" class="tab-page active">
 
 <div class="card">
 
-<div class="muted">ВАШ ПРОФИЛЬ</div>
+<div class="muted">
+ВАШ ПРОФИЛЬ
+</div>
 
-<h2 id="rank">Рядовой</h2>
+<h2 id="rank">
+Рядовой
+</h2>
 
-<div class="gold">Курсант</div>
+<div class="gold">
+Курсант
+</div>
 
 <p>
 ОПЫТ:
@@ -300,14 +337,23 @@ h2{
 <i id="rankBar"></i>
 </div>
 
+<!-- совместимость со старым app.js -->
+<span id="rankProgress" class="compat">
+0
+</span>
+
 </div>
 
+
+<!-- РЕСУРСЫ -->
 
 <div class="profile">
 
 <div class="stat">
 
-<small>⚡ ЭНЕРГИЯ</small>
+<small>
+⚡ ЭНЕРГИЯ
+</small>
 
 <b>
 <span id="energy">100</span>
@@ -315,84 +361,123 @@ h2{
 <span id="maxEnergy">100</span>
 </b>
 
-<!-- ВАЖНО: нужен старому app.js -->
 <div class="progress">
 <i id="energyBar"></i>
 </div>
 
-</div>
-
-
-<div class="stat">
-
-<small>💰 КРЕДИТЫ</small>
-
-<b id="credits">12 450</b>
-
-<small>+120 / мин</small>
+<!-- совместимость -->
+<span id="maxEnergy2" class="compat">
+100
+</span>
 
 </div>
 
 
 <div class="stat">
 
-<small>⭐ ПРЕСТИЖ</small>
+<small>
+💰 КРЕДИТЫ
+</small>
 
-<b id="prestige">0</b>
+<b id="credits">
+12 450
+</b>
+
+<small>
++120 / мин
+</small>
 
 </div>
 
 
 <div class="stat">
 
-<small>🏅 МЕДАЛИ</small>
+<small>
+⭐ ПРЕСТИЖ
+</small>
 
-<b id="medals">0</b>
+<b id="prestige">
+0
+</b>
+
+</div>
+
+
+<div class="stat">
+
+<small>
+🏅 МЕДАЛИ
+</small>
+
+<b id="medals">
+0
+</b>
 
 </div>
 
 </div>
 
+
+<!-- ЛОКАЦИЯ -->
 
 <div class="card">
 
-<div class="muted">ТЕКУЩАЯ ЛОКАЦИЯ</div>
+<div class="muted">
+ТЕКУЩАЯ ЛОКАЦИЯ
+</div>
 
-<h2 id="place">Казарма</h2>
+<h2 id="place">
+Казарма
+</h2>
 
-<div id="description" class="location">
+<div id="description" class="location green">
 Учебный корпус
 </div>
 
 </div>
 
 
+<!-- ТРЕНИРОВКА -->
+
 <div class="card">
 
-<div class="muted">СЛУЖЕБНАЯ ТРЕНИРОВКА</div>
+<div class="muted">
+СЛУЖЕБНАЯ ТРЕНИРОВКА
+</div>
 
-<h2>Подготовка бойца</h2>
+<h2>
+Подготовка бойца
+</h2>
 
 <p class="muted">
 Получайте опыт и продвигайтесь по службе.
 </p>
 
-<button id="clickButton" class="big-button">
+<button
+id="clickButton"
+class="big-button"
+type="button"
+>
 🎖 ТРЕНИРОВКА
 </button>
 
 <div
 id="nextMini"
 class="muted"
-style="text-align:center;margin-top:10px">
+style="text-align:center;margin-top:10px"
+>
 </div>
 
 </div>
 
+
+<!-- ЗАДАНИЯ -->
 
 <div class="card">
 
-<div class="muted">📋 ЗАДАНИЯ НА СЕГОДНЯ</div>
+<div class="muted">
+📋 ЗАДАНИЯ НА СЕГОДНЯ
+</div>
 
 <div class="item">
 🎯 Провести 10 тренировок
@@ -409,13 +494,22 @@ style="text-align:center;margin-top:10px">
 </div>
 
 
+<!-- БОНУС -->
+
 <div class="card">
 
 <div class="reward">
 
 <div>
-<div class="muted">🎁 ЕЖЕДНЕВНОЙ БОНУС</div>
-<b>Награда за вход</b>
+
+<div class="muted">
+🎁 ЕЖЕДНЕВНЫЙ БОНУС
+</div>
+
+<b>
+Награда за вход
+</b>
+
 </div>
 
 <div class="badge">
@@ -426,18 +520,25 @@ style="text-align:center;margin-top:10px">
 
 </div>
 
+
 </section>
 
 
-<!-- ==================== КАРТА ==================== -->
+<!-- ========================= -->
+<!-- КАРТА -->
+<!-- ========================= -->
 
 <section id="tab-map" class="tab-page">
 
 <div class="card">
 
-<div class="eyebrow">🗺 КАРТА</div>
+<div class="eyebrow">
+🗺 КАРТА
+</div>
 
-<h2>Путь службы</h2>
+<h2>
+Путь службы
+</h2>
 
 <p class="muted">
 Открывайте новые места по мере продвижения.
@@ -517,15 +618,21 @@ style="text-align:center;margin-top:10px">
 </section>
 
 
-<!-- ==================== ШТАБ ==================== -->
+<!-- ========================= -->
+<!-- ШТАБ -->
+<!-- ========================= -->
 
 <section id="tab-base" class="tab-page">
 
 <div class="card">
 
-<div class="eyebrow">🏢 ШТАБ</div>
+<div class="eyebrow">
+🏢 ШТАБ
+</div>
 
-<h2>Развитие базы</h2>
+<h2>
+Развитие базы
+</h2>
 
 <p class="muted">
 Улучшения увеличивают пассивный доход.
@@ -605,15 +712,21 @@ style="text-align:center;margin-top:10px">
 </section>
 
 
-<!-- ==================== ЗВАНИЯ ==================== -->
+<!-- ========================= -->
+<!-- ЗВАНИЯ -->
+<!-- ========================= -->
 
 <section id="tab-ranks" class="tab-page">
 
 <div class="card">
 
-<div class="eyebrow">🎖 ЗВАНИЯ</div>
+<div class="eyebrow">
+🎖 ЗВАНИЯ
+</div>
 
-<h2>Военная карьера</h2>
+<h2>
+Военная карьера
+</h2>
 
 <p class="muted">
 Продвигайтесь по карьерной лестнице.
@@ -697,15 +810,21 @@ style="text-align:center;margin-top:10px">
 </section>
 
 
-<!-- ==================== ДОСТИЖЕНИЯ ==================== -->
+<!-- ========================= -->
+<!-- ДОСТИЖЕНИЯ -->
+<!-- ========================= -->
 
 <section id="tab-achievements" class="tab-page">
 
 <div class="card">
 
-<div class="eyebrow">🏆 ДОСТИЖЕНИЯ</div>
+<div class="eyebrow">
+🏆 ДОСТИЖЕНИЯ
+</div>
 
-<h2>Награды службы</h2>
+<h2>
+Награды службы
+</h2>
 
 <p class="muted">
 Здесь будут храниться ваши достижения и медали.
@@ -784,34 +903,60 @@ style="text-align:center;margin-top:10px">
 
 </section>
 
+
+<!-- Совместимость со старым app.js -->
+<div id="currentMini" class="compat"></div>
+
 </main>
 
 
-<!-- ==================== НИЖНЕЕ МЕНЮ ==================== -->
+<!-- ========================= -->
+<!-- НИЖНЕЕ МЕНЮ -->
+<!-- ========================= -->
 
 <nav class="nav">
 
-<button class="active" data-tab="home">
+<button
+class="active"
+data-tab="home"
+type="button"
+>
 <span>🏠</span>
 Главная
 </button>
 
-<button data-tab="map">
+
+<button
+data-tab="map"
+type="button"
+>
 <span>🗺</span>
 Карта
 </button>
 
-<button data-tab="base">
+
+<button
+data-tab="base"
+type="button"
+>
 <span>🏢</span>
 Штаб
 </button>
 
-<button data-tab="ranks">
+
+<button
+data-tab="ranks"
+type="button"
+>
 <span>🎖</span>
 Звания
 </button>
 
-<button data-tab="achievements">
+
+<button
+data-tab="achievements"
+type="button"
+>
 <span>🏆</span>
 Достижения
 </button>
@@ -819,55 +964,12 @@ style="text-align:center;margin-top:10px">
 </nav>
 
 
+<!-- ========================= -->
+<!-- ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК -->
+<!-- ========================= -->
+
 <script>
 
-const tg = window.Telegram && window.Telegram.WebApp;
-
-if(tg){
- tg.ready();
- tg.expand();
-}
-
-
-/* Переключение вкладок */
-
-const buttons = document.querySelectorAll(".nav button");
-
-const pages = document.querySelectorAll(".tab-page");
-
-buttons.forEach(button => {
-
- button.addEventListener("click", () => {
-
-  const name = button.dataset.tab;
-
-  pages.forEach(page => {
-   page.classList.remove("active");
-  });
-
-  const target = document.getElementById("tab-" + name);
-
-  if(target){
-   target.classList.add("active");
-  }
-
-  buttons.forEach(item => {
-   item.classList.remove("active");
-  });
-
-  button.classList.add("active");
-
-  window.scrollTo(0,0);
-
- });
-
-});
-
-</script>
-
-
-<!-- Старый игровой JS оставляем подключённым -->
-<script src="app.js"></script>
-
-</body>
-</html>
+const tg =
+ window.Telegram &&
+ window.Telegram.WebApp;
