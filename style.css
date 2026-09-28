@@ -61,7 +61,6 @@ h1 {
   margin: 0;
   font-size: 28px;
   line-height: 1.1;
-  letter-spacing: -0.5px;
 }
 
 .subtitle {
@@ -77,7 +76,7 @@ h1 {
   padding: 9px 10px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: rgba(17, 23, 32, .9);
+  background: rgba(17,23,32,.9);
   color: var(--muted);
   font-size: 10px;
   text-align: center;
@@ -93,7 +92,7 @@ h1 {
 }
 
 .box {
-  background: linear-gradient(145deg, rgba(21, 29, 40, .98), rgba(12, 17, 24, .98));
+  background: linear-gradient(145deg,rgba(21,29,40,.98),rgba(12,17,24,.98));
   border: 1px solid var(--line);
   border-radius: 18px;
   box-shadow: 0 12px 30px rgba(0,0,0,.22);
@@ -102,3 +101,79 @@ h1 {
 .profile {
   padding: 15px;
   margin-bottom: 12px;
+}
+
+.profile-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  background: linear-gradient(145deg,#202b39,#111720);
+  border: 1px solid #384553;
+  font-size: 30px;
+}
+
+.small-label {
+  color: var(--gold);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.profile h2,
+.rank-card h2,
+.action-title h2,
+.daily h2 {
+  margin: 4px 0 2px;
+  font-size: 20px;
+}
+
+.profile p,
+.rank-card p,
+.daily p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.xp-info {
+  margin-top: 14px;
+}
+
+.xp-info > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.xp-info span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.xp-info b {
+  color: var(--gold2);
+  font-size: 12px;
+}
+
+.bar {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #080b10;
+}
+
+.progress > div {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg,var(--
