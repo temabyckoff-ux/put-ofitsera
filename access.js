@@ -1,7 +1,7 @@
 (() => {
-  // Closed beta gate. In Telegram we authenticate through signed initData.
-  // Set this to the deployed Worker URL before publishing the closed beta.
-  const API_BASE = window.PUT_OFITSERA_API || "https://REPLACE_WITH_WORKER_URL";
+  // Closed beta gate. Telegram users authenticate through signed initData.
+  // The backend Worker is deployed at this URL.
+  const API_BASE = window.PUT_OFITSERA_API || "https://put-ofitsera.tema-byckoff.workers.dev";
   const tg = window.Telegram?.WebApp;
   const app = document.querySelector('.app');
   if (!tg) return; // Keep desktop/browser development usable.
@@ -29,7 +29,6 @@
   }
   async function check(){
     try{
-      if(API_BASE.includes('REPLACE_WITH')) throw new Error('backend_not_configured');
       const r=await fetch(`${API_BASE}/api/auth`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({initData:tg.initData})});
       const data=await r.json();
       if(data.status==='approved'){
