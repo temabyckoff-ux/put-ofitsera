@@ -1,0 +1,12 @@
+name = "put-ofitsera-access"
+main = "worker.js"
+compatibility_date = "2026-09-29"
+
+[[kv_namespaces]]
+binding = "ACCESS"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+[vars]
+# Do not put the bot token here. Add BOT_TOKEN and ADMIN_CHAT_ID as Cloudflare Worker secrets.
+# ADMIN_IDS can contain comma-separated Telegram user IDs.
+ADMIN_IDS = ""
