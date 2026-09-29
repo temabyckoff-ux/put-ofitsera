@@ -34,6 +34,27 @@ async function auth(request,env){
 
 async function telegram(request,env){
   const update=await body(request);
+
+  // Telegram sends ordinary chat messages here too. The previous version
+  // silently acknowledged them, which made the bot look unresponsive even
+  // though the webhook itself was working. Keep callback handling below and
+  // provide a small reply for private-chat messages.
+  if (update.message) {
+    const message=update.message;
+    const chatId=message.chat?.id;
+    const text=String(message.text||"").trim();
+    if (chatId && message.chat?.type === "private") {
+      if (text === "/start" || text === "привет" || text === "Привет") {
+        const admin=isAdmin(String(message.from?.id||""),env);
+        const reply=admin
+          ? "👋 Бот работает. Webhook подключён.\n\nОткройте приложение «Путь офицера», чтобы проверить доступ и управлять заявками."
+          : "👋 Бот работает.\n\nОткройте приложение «Путь офицера» для проверки доступа. Если доступ ещё не одобрен, заявка будет отправлена владельцу.\n\nЕсли вы уже получили одобрение — просто откройте приложение ещё раз.";
+        await tg(env,"sendMessage",{chat_id:chatId,text:reply});
+      }
+    }
+    return json({ok:true});
+  }
+
   if (!update.callback_query) return json({ok:true});
   const cb=update.callback_query;
   const fromId=String(cb.from?.id||"");
