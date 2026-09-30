@@ -18,7 +18,7 @@
       const server=payload?.state&&typeof payload.state==='object'?payload.state:{};
       const stats=payload?.stats&&typeof payload.stats==='object'?payload.stats:{};
       const merged={...local,...server};
-      const progressFields=['clicks','credits','prestige','medals','energy','rating','wins','losses'];
+      const progressFields=['clicks','credits','prestige','medals','energy','rating','cups','wins','losses'];
       for(const field of progressFields){
         const values=[local[field],server[field],stats[field]].map(Number).filter(Number.isFinite);
         if(values.length)merged[field]=Math.max(...values);
@@ -37,8 +37,8 @@
     }catch(e){console.warn('player load failed',e)}
     if(!restored){show('Восстанавливаем прогресс','Сервер сохранений временно не ответил. Закройте и откройте игру снова — прогресс не будет перезаписан нулевыми значениями.');return}
     window.PUT_OFITSERA_ADMIN=!!isAdmin;
-    const s=document.createElement('script');s.src='app.js?v=20260930c';document.body.appendChild(s);
-    const d=document.createElement('script');d.src='dev-mode.js?v=20260930c';document.body.appendChild(d);
+    const s=document.createElement('script');s.src='app.js?v=20260930d';document.body.appendChild(s);
+    const d=document.createElement('script');d.src='dev-mode.js?v=20260930d';document.body.appendChild(d);
     gate.remove();if(app)app.style.display='';
   }
   async function check(){
