@@ -1,0 +1,51 @@
+name: Apply rank system update
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  update:
+    if: ${{ !contains(github.event.head_commit.message, 'Apply rank system update') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Update ranks
+        shell: python
+        run: |
+          from pathlib import Path
+
+          def replace(path, old, new):
+              p = Path(path)
+              s = p.read_text(encoding='utf-8')
+              if old not in s:
+                  raise SystemExit(f'Missing expected text in {path}: {old[:100]}')
+              p.write_text(s.replace(old, new, 1), encoding='utf-8')
+
+          replace('app.js',
+              'const R=["Рядовой","Ефрейтор","Младший сержант","Сержант","Старший сержант","Прапорщик","Младший лейтенант","Лейтенант","Старший лейтенант","Капитан","Майор","Подполковник","Полковник","Генерал-майор","Генерал-лейтенант","Генерал-полковник","Генерал армии"];',
+              'const R=["Рядовой","Ефрейтор","Младший сержант","Сержант","Старший сержант","Старшина","Прапорщик","Старший прапорщик","Младший лейтенант","Лейтенант","Старший лейтенант","Капитан","Майор","Подполковник","Полковник","Генерал-майор","Генерал-лейтенант","Генерал-полковник","Генерал армии","Маршал"];')
+          replace('app.js',
+              'const NEED=[500,1000,2000,3000,5000,7000,10000,14000,18000,23000,30000,40000,55000,70000,90000,120000,150000];',
+              'const NEED=[500,1000,2000,3000,4000,5000,6000,7000,10000,14000,18000,23000,30000,40000,55000,70000,90000,120000,150000,180000];')
+          replace('app.js', 'return Math.min(r,16)', 'return Math.min(r,19)')
+          replace('app.js', '["general","Генерал армии","Достичь высшего звания.",s=>s.rank>=16]', '["general","Генерал армии","Достичь высшего звания.",s=>s.rank>=19]')
+          replace('app.js', 'const LOC=[["Казарма","Базовая локация",0],["Штаб подразделения","Первое командование",2],["Военный полигон","Тактическая зона",4],["Офицерская часть","Офицерская зона",5],["Командный центр","Оперативное управление",8],["Генеральный штаб","Высшее командование",12],["Кремлёвский кабинет","Финальная зона",16]];', 'const LOC=[["Казарма","Базовая локация",0],["Штаб подразделения","Первое командование",2],["Военный полигон","Тактическая зона",4],["Офицерская часть","Офицерская зона",6],["Командный центр","Оперативное управление",8],["Генеральный штаб","Высшее командование",12],["Кремлёвский кабинет","Финальная зона",19]];')
+          replace('app.js', '["training","Тактическая подготовка","Отработка действий отделения.",4,1200,8,5,1,180000],["operation","Оперативная задача","Сложная задача в зоне ответственности.",7,3000,15,10,1,300000],["command","Командная операция","Управление несколькими подразделениями.",10,7000,30,20,2,600000],["strategy","Стратегическая операция","Задача уровня высшего командования.",14,18000,60,50,4,1200000]', '["training","Тактическая подготовка","Отработка действий отделения.",4,1200,8,5,1,180000],["operation","Оперативная задача","Сложная задача в зоне ответственности.",9,3000,15,10,1,300000],["command","Командная операция","Управление несколькими подразделениями.",12,7000,30,20,2,600000],["strategy","Стратегическая операция","Задача уровня высшего командования.",14,18000,60,50,4,1200000]')
+          replace('app.js', 'const unlocked=S.rank>=6;', 'const unlocked=S.rank>=8;')
+          replace('app.js', 'const r=S.rating||1000,rows=', 'const r=S.rating||1000,rows=')
+          replace('app.js', 'const next=S.rank<16?NEED[S.rank+1]:NEED[16],prev=S.rank?NEED[S.rank]:0,p=S.rank>=16?100:', 'const next=S.rank<19?NEED[S.rank+1]:NEED[19],prev=S.rank?NEED[S.rank]:0,p=S.rank>=19?100:')
+          replace('app.js', 'txt("rankNext",S.rank>=16?"Максимальное звание":', 'txt("rankNext",S.rank>=19?"Максимальное звание":')
+          replace('social.js', 'const rankNames=["Рядовой","Ефрейтор","Младший сержант","Сержант","Старший сержант","Прапорщик","Младший лейтенант","Лейтенант","Старший лейтенант","Капитан","Майор","Подполковник","Полковник","Генерал-майор","Генерал-лейтенант","Генерал-полковник","Генерал армии"];', 'const rankNames=["Рядовой","Ефрейтор","Младший сержант","Сержант","Старший сержант","Старшина","Прапорщик","Старший прапорщик","Младший лейтенант","Лейтенант","Старший лейтенант","Капитан","Майор","Подполковник","Полковник","Генерал-майор","Генерал-лейтенант","Генерал-полковник","Генерал армии","Маршал"];')
+          replace('index.html', '<div class="card"><div class="card-title">5. Старший сержант</div><div class="muted">3 000 тренировок</div></div><div class="card"><div class="card-title">6. Прапорщик</div><div class="muted">5 000 тренировок</div></div><div class="card"><div class="card-title">7. Младший лейтенант</div><div class="muted">7 000 тренировок</div></div><div class="card"><div class="card-title">8. Лейтенант</div><div class="muted">10 000 тренировок</div></div><div class="card"><div class="card-title">9. Старший лейтенант</div><div class="muted">14 000 тренировок</div></div><div class="card"><div class="card-title">10. Капитан</div><div class="muted">18 000 тренировок</div></div><div class="card"><div class="card-title">11. Майор</div><div class="muted">23 000 тренировок</div></div><div class="card"><div class="card-title">12. Подполковник</div><div class="muted">30 000 тренировок</div></div><div class="card"><div class="card-title">13. Полковник</div><div class="muted">40 000 тренировок</div></div><div class="card"><div class="card-title">14. Генерал-майор</div><div class="muted">55 000 тренировок</div></div><div class="card"><div class="card-title">15. Генерал-лейтенант</div><div class="muted">70 000 тренировок</div></div><div class="card"><div class="card-title">16. Генерал-полковник</div><div class="muted">90 000 тренировок</div></div><div class="card"><div class="card-title">17. Генерал армии</div><div class="muted">120 000 тренировок</div></div>', '<div class="card"><div class="card-title">5. Старший сержант</div><div class="muted">3 000 тренировок</div></div><div class="card"><div class="card-title">6. Старшина</div><div class="muted">4 000 тренировок</div></div><div class="card"><div class="card-title">7. Прапорщик</div><div class="muted">5 000 тренировок</div></div><div class="card"><div class="card-title">8. Старший прапорщик</div><div class="muted">6 000 тренировок</div></div><div class="card"><div class="card-title">9. Младший лейтенант</div><div class="muted">7 000 тренировок</div></div><div class="card"><div class="card-title">10. Лейтенант</div><div class="muted">10 000 тренировок</div></div><div class="card"><div class="card-title">11. Старший лейтенант</div><div class="muted">14 000 тренировок</div></div><div class="card"><div class="card-title">12. Капитан</div><div class="muted">18 000 тренировок</div></div><div class="card"><div class="card-title">13. Майор</div><div class="muted">23 000 тренировок</div></div><div class="card"><div class="card-title">14. Подполковник</div><div class="muted">30 000 тренировок</div></div><div class="card"><div class="card-title">15. Полковник</div><div class="muted">40 000 тренировок</div></div><div class="card"><div class="card-title">16. Генерал-майор</div><div class="muted">55 000 тренировок</div></div><div class="card"><div class="card-title">17. Генерал-лейтенант</div><div class="muted">70 000 тренировок</div></div><div class="card"><div class="card-title">18. Генерал-полковник</div><div class="muted">90 000 тренировок</div></div><div class="card"><div class="card-title">19. Генерал армии</div><div class="muted">150 000 тренировок</div></div><div class="card"><div class="card-title">20. Маршал</div><div class="muted">180 000 тренировок</div></div>')
+
+          wf = Path('.github/workflows/apply-rank-system.yml')
+          wf.unlink(missing_ok=True)
+      - name: Commit rank update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js social.js index.html .github/workflows/apply-rank-system.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Apply rank system update"
+          git push
