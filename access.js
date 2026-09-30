@@ -21,12 +21,12 @@
       }
     }catch(e){console.warn('server state restore failed',e)}
   }
-  async function loadGame(){
+  async function loadGame(isAdmin){
     try{
       const r=await fetch(`${API_BASE}/api/player/load`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({initData:tg.initData})});
       if(r.ok)mergeServerState(await r.json());
     }catch(e){console.warn('player load failed',e)}
-    window.PUT_OFITSERA_ADMIN=false;
+    window.PUT_OFITSERA_ADMIN=!!isAdmin;
     const s=document.createElement('script');s.src='app.js';document.body.appendChild(s);
     const d=document.createElement('script');d.src='dev-mode.js';document.body.appendChild(d);
     gate.remove();if(app)app.style.display='';
@@ -35,7 +35,7 @@
     try{
       const r=await fetch(`${API_BASE}/api/auth`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({initData:tg.initData})});
       const data=await r.json();
-      if(data.status==='approved'){window.PUT_OFITSERA_ADMIN=data.role==='admin';await loadGame();return}
+      if(data.status==='approved'){await loadGame(data.role==='admin');return}
       if(data.status==='pending'){show('Запрос отправлен','Мы получили твой запрос. Владелец игры должен разрешить доступ.');return}
       if(data.status==='denied'){show('Доступ отклонён','Пока доступ к закрытой бете не выдан.');return}
       show('Доступ не получен','Нажми кнопку ниже, чтобы отправить запрос.',true);
