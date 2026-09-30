@@ -1,4 +1,4 @@
-name = "put-ofitsera-access"
+name = "put-ofitsera"
 main = "worker.js"
 compatibility_date = "2026-09-29"
 
@@ -7,6 +7,6 @@ binding = "ACCESS"
 id = "83b59c3bfe074f4db8fae3c6ff1840d7"
 
 [vars]
-# Do not put the bot token here. Add BOT_TOKEN and ADMIN_CHAT_ID as Cloudflare Worker secrets.
+# Do not put the bot token here. BOT_TOKEN and ADMIN_CHAT_ID stay configured as Cloudflare Worker secrets.
 # ADMIN_IDS can contain comma-separated Telegram user IDs.
 ADMIN_IDS = ""
