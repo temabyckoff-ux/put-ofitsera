@@ -4,7 +4,7 @@
   const tg=()=>window.Telegram?.WebApp;
   const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
   const n=v=>Math.floor(Number(v)||0).toLocaleString("ru-RU");
-  const rankNames=["Рядовой","Ефрейтор","Младший сержант","Сержант","Старший сержант","Прапорщик","Младший лейтенант","Лейтенант","Старший лейтенант","Капитан","Майор","Подполковник","Полковник","Генерал-майор","Генерал-лейтенант","Генерал-полковник","Генерал армии"];
+  const rankNames=["Рядовой","Ефрейтор","Младший сержант","Сержант","Старший сержант","Старшина","Прапорщик","Старший прапорщик","Младший лейтенант","Лейтенант","Старший лейтенант","Капитан","Майор","Подполковник","Полковник","Генерал-майор","Генерал-лейтенант","Генерал-полковник","Генерал армии","Маршал"];
   let lastSnapshot="",lastSyncAt=0,lastAdminLoad=0,syncTimer=0,patched=false;
   function state(){try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch{return {}}}
   function snapshot(){const s=state(),attack=Number(document.getElementById("attack")?.textContent||10)||10,defense=Number(document.getElementById("defense")?.textContent||10)||10,power=Number(document.getElementById("power")?.textContent||(attack+defense))||(attack+defense);return{rank:Number(s.rank)||0,clicks:Number(s.clicks)||0,credits:Number(s.credits)||0,prestige:Number(s.prestige)||0,medals:Number(s.medals)||0,missionsCompleted:Number(s.missionsCompleted)||0,achievements:Array.isArray(s.achievements)?s.achievements.length:0,items:Array.isArray(s.items)?s.items.length:0,energy:Number(s.energy)||0,rating:Number(s.rating)||1000,wins:Number(s.wins)||0,losses:Number(s.losses)||0,attack,defense,power}}
