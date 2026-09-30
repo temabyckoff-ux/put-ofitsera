@@ -35,14 +35,15 @@
       const r=await fetch(`${API_BASE}/api/player/load`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({initData:tg.initData})});
       if(r.ok){mergeServerState(await r.json());restored=true}
     }catch(e){console.warn('player load failed',e)}
-    if(!restored){show('Восстанавливаем прогресс','Сервер сохранений временно не ответил. Закройте и откройте игру снова — прогресс не будет перезаписан нулевыми значениями.');return}
+    if(!restored){console.warn('server restore unavailable; starting with protected local progress')}
     window.PUT_OFITSERA_ADMIN=!!isAdmin;
     show('Загружаем игру','Восстанавливаем интерфейс и прогресс…');
     const s=document.createElement('script');
     s.src='app.js?v=20260930e';
     s.onload=()=>{
+      let waits=0;
       const finish=()=>{
-        if(window.PUT_OFITSERA_GAME_READY!==true){setTimeout(finish,50);return}
+        if(window.PUT_OFITSERA_GAME_READY!==true&&waits++<100){setTimeout(finish,50);return}
         if(isAdmin){
           const d=document.createElement('script');
           d.src='dev-mode.js?v=20260930e';
