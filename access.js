@@ -37,9 +37,26 @@
     }catch(e){console.warn('player load failed',e)}
     if(!restored){show('Восстанавливаем прогресс','Сервер сохранений временно не ответил. Закройте и откройте игру снова — прогресс не будет перезаписан нулевыми значениями.');return}
     window.PUT_OFITSERA_ADMIN=!!isAdmin;
-    const s=document.createElement('script');s.src='app.js?v=20260930d';document.body.appendChild(s);
-    const d=document.createElement('script');d.src='dev-mode.js?v=20260930d';document.body.appendChild(d);
-    gate.remove();if(app)app.style.display='';
+    show('Загружаем игру','Восстанавливаем интерфейс и прогресс…');
+    const s=document.createElement('script');
+    s.src='app.js?v=20260930e';
+    s.onload=()=>{
+      const finish=()=>{
+        if(window.PUT_OFITSERA_GAME_READY!==true){setTimeout(finish,50);return}
+        if(isAdmin){
+          const d=document.createElement('script');
+          d.src='dev-mode.js?v=20260930e';
+          d.onload=()=>{gate.remove();if(app)app.style.display=''};
+          d.onerror=()=>{gate.remove();if(app)app.style.display=''};
+          document.body.appendChild(d);
+        }else{
+          gate.remove();if(app)app.style.display='';
+        }
+      };
+      finish();
+    };
+    s.onerror=()=>show('Ошибка загрузки','Не удалось загрузить игру. Закройте и откройте её снова.');
+    document.body.appendChild(s);
   }
   async function check(){
     try{
