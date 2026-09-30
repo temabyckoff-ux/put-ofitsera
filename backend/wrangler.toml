@@ -7,7 +7,3 @@ keep_vars = true
 binding = "ACCESS"
 id = "83b59c3bfe074f4db8fae3c6ff1840d7"
 
-[vars]
-# Do not put the bot token here. BOT_TOKEN and ADMIN_CHAT_ID stay configured as Cloudflare Worker secrets.
-# ADMIN_IDS can contain comma-separated Telegram user IDs.
-# ADMIN_IDS is configured as a Cloudflare secret/environment variable.
