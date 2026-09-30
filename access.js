@@ -14,7 +14,7 @@
   function show(t,d,showButton=false){title.textContent=t;text.textContent=d;button.hidden=!showButton}
   function mergeServerState(payload){
     try{
-      if(payload?.state&&typeof payload.state==='object'){localStorage.setItem(GAME_KEY,JSON.stringify(payload.state));return}
+      if(payload?.state&&typeof payload.state==='object'){const local=JSON.parse(localStorage.getItem(GAME_KEY)||'null');const server=payload.state;if(local&&typeof local==='object'&&(Number(local.clicks)||0)>(Number(server.clicks)||0)){console.warn('keeping newer local progress');return}localStorage.setItem(GAME_KEY,JSON.stringify(server));return}
       if(payload?.stats&&typeof payload.stats==='object'){
         const local=JSON.parse(localStorage.getItem(GAME_KEY)||'{}');
         local.rank=payload.stats.rank??local.rank;local.clicks=payload.stats.clicks??local.clicks;local.credits=payload.stats.credits??local.credits;local.prestige=payload.stats.prestige??local.prestige;local.medals=payload.stats.medals??local.medals;local.energy=payload.stats.energy??local.energy;local.rating=payload.stats.rating??local.rating;local.wins=payload.stats.wins??local.wins;local.losses=payload.stats.losses??local.losses;localStorage.setItem(GAME_KEY,JSON.stringify(local));
@@ -29,8 +29,8 @@
     }catch(e){console.warn('player load failed',e)}
     if(!restored){show('Восстанавливаем прогресс','Сервер сохранений временно не ответил. Закройте и откройте игру снова — прогресс не будет перезаписан нулевыми значениями.');return}
     window.PUT_OFITSERA_ADMIN=!!isAdmin;
-    const s=document.createElement('script');s.src='app.js';document.body.appendChild(s);
-    const d=document.createElement('script');d.src='dev-mode.js';document.body.appendChild(d);
+    const s=document.createElement('script');s.src='app.js?v=20260930b';document.body.appendChild(s);
+    const d=document.createElement('script');d.src='dev-mode.js?v=20260930b';document.body.appendChild(d);
     gate.remove();if(app)app.style.display='';
   }
   async function check(){
