@@ -4,12 +4,12 @@
   const tg = window.Telegram?.WebApp;
   const app = document.querySelector('.app');
   if (!tg) return;
-  tg.ready(); tg.expand(); if (app) app.style.display = 'none';
+  tg.ready(); tg.expand();
   const gate = document.createElement('div');
   gate.id = 'accessGate';
   gate.innerHTML = '<div class="access-box"><div class="access-mark">🎖️</div><div class="eyebrow">ЗАКРЫТАЯ БЕТА</div><h2 id="accessTitle">Проверяем доступ</h2><p id="accessText">Подождите немного…</p><button id="accessRequest" class="gold-btn" hidden>🔑 Запросить доступ</button></div>';
   Object.assign(gate.style,{position:'fixed',inset:'0',zIndex:'99999',display:'grid',placeItems:'center',padding:'22px',background:'#070b11',color:'#f2f5f7'});
-  document.body.appendChild(gate);
+  gate.style.display='none'; document.body.appendChild(gate);
   const title=document.getElementById('accessTitle'),text=document.getElementById('accessText'),button=document.getElementById('accessRequest');
   function show(t,d,showButton=false){title.textContent=t;text.textContent=d;button.hidden=!showButton}
   function mergeServerState(payload){
@@ -37,7 +37,7 @@
     }catch(e){console.warn('player load failed',e)}
     if(!restored){console.warn('server restore unavailable; starting with protected local progress')}
     window.PUT_OFITSERA_ADMIN=!!isAdmin;
-    show('Загружаем игру','Восстанавливаем интерфейс и прогресс…');
+
     const s=document.createElement('script');
     s.src='app.js?v=20260930e';
     s.onload=()=>{
@@ -47,11 +47,11 @@
         if(isAdmin){
           const d=document.createElement('script');
           d.src='dev-mode.js?v=20260930e';
-          d.onload=()=>{gate.remove();if(app)app.style.display=''};
-          d.onerror=()=>{gate.remove();if(app)app.style.display=''};
+          d.onload=()=>{gate.remove()};
+          d.onerror=()=>{gate.remove()};
           document.body.appendChild(d);
         }else{
-          gate.remove();if(app)app.style.display='';
+          gate.remove();
         }
       };
       finish();
