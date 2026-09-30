@@ -14,11 +14,19 @@
   function show(t,d,showButton=false){title.textContent=t;text.textContent=d;button.hidden=!showButton}
   function mergeServerState(payload){
     try{
-      if(payload?.state&&typeof payload.state==='object'){const local=JSON.parse(localStorage.getItem(GAME_KEY)||'null');const server=payload.state;if(local&&typeof local==='object'&&(Number(local.clicks)||0)>(Number(server.clicks)||0)){console.warn('keeping newer local progress');return}localStorage.setItem(GAME_KEY,JSON.stringify(server));return}
-      if(payload?.stats&&typeof payload.stats==='object'){
-        const local=JSON.parse(localStorage.getItem(GAME_KEY)||'{}');
-        local.rank=payload.stats.rank??local.rank;local.clicks=payload.stats.clicks??local.clicks;local.credits=payload.stats.credits??local.credits;local.prestige=payload.stats.prestige??local.prestige;local.medals=payload.stats.medals??local.medals;local.energy=payload.stats.energy??local.energy;local.rating=payload.stats.rating??local.rating;local.wins=payload.stats.wins??local.wins;local.losses=payload.stats.losses??local.losses;localStorage.setItem(GAME_KEY,JSON.stringify(local));
+      const local=JSON.parse(localStorage.getItem(GAME_KEY)||'{}');
+      const server=payload?.state&&typeof payload.state==='object'?payload.state:{};
+      const stats=payload?.stats&&typeof payload.stats==='object'?payload.stats:{};
+      const merged={...local,...server};
+      const progressFields=['clicks','credits','prestige','medals','energy','rating','wins','losses'];
+      for(const field of progressFields){
+        const values=[local[field],server[field],stats[field]].map(Number).filter(Number.isFinite);
+        if(values.length)merged[field]=Math.max(...values);
       }
+      const need=[500,1000,2000,3000,4000,5000,6000,7000,10000,14000,18000,23000,30000,40000,55000,70000,90000,150000,180000];
+      let rank=0;for(let i=0;i<need.length;i++){if((Number(merged.clicks)||0)>=need[i])rank=i+1;else break}
+      merged.rank=Math.min(rank,19);
+      localStorage.setItem(GAME_KEY,JSON.stringify(merged));
     }catch(e){console.warn('server state restore failed',e)}
   }
   async function loadGame(isAdmin){
@@ -29,8 +37,8 @@
     }catch(e){console.warn('player load failed',e)}
     if(!restored){show('Восстанавливаем прогресс','Сервер сохранений временно не ответил. Закройте и откройте игру снова — прогресс не будет перезаписан нулевыми значениями.');return}
     window.PUT_OFITSERA_ADMIN=!!isAdmin;
-    const s=document.createElement('script');s.src='app.js?v=20260930b';document.body.appendChild(s);
-    const d=document.createElement('script');d.src='dev-mode.js?v=20260930b';document.body.appendChild(d);
+    const s=document.createElement('script');s.src='app.js?v=20260930c';document.body.appendChild(s);
+    const d=document.createElement('script');d.src='dev-mode.js?v=20260930c';document.body.appendChild(d);
     gate.remove();if(app)app.style.display='';
   }
   async function check(){
