@@ -3,7 +3,7 @@
   if (window.PUT_OFITSERA_ADMIN !== true) return;
   const unlockTester = () => {
     try {
-      S.rank = 16; S.clicks = 150000; S.energy = 400; S.credits = 99999999; S.prestige = 99999; S.medals = 999;
+      S.rank = 19; S.clicks = 180000; S.energy = 400; S.credits = 99999999; S.prestige = 99999; S.medals = 999;
       S.missionsCompleted = 100; S.buildings = [10,10,10,10,10]; S.items = SHOP.filter(x => x[4] === "item").map(x => x[5]);
       S.achievements = ACHIEVEMENTS.map(x => x[0]); S.rating = 2500; S.wins = 50; S.losses = 5;
       S.equipment = ["Парадная форма", "Кабинет командира"]; S.commanderTrust = 100; S.unitLoyalty = 100; S.intel = 100; S.fatigue = 0;
