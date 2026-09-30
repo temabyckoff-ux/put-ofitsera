@@ -22,10 +22,12 @@
     }catch(e){console.warn('server state restore failed',e)}
   }
   async function loadGame(isAdmin){
+    let restored=false;
     try{
       const r=await fetch(`${API_BASE}/api/player/load`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({initData:tg.initData})});
-      if(r.ok)mergeServerState(await r.json());
+      if(r.ok){mergeServerState(await r.json());restored=true}
     }catch(e){console.warn('player load failed',e)}
+    if(!restored){show('Восстанавливаем прогресс','Сервер сохранений временно не ответил. Закройте и откройте игру снова — прогресс не будет перезаписан нулевыми значениями.');return}
     window.PUT_OFITSERA_ADMIN=!!isAdmin;
     const s=document.createElement('script');s.src='app.js';document.body.appendChild(s);
     const d=document.createElement('script');d.src='dev-mode.js';document.body.appendChild(d);
