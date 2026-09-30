@@ -5,6 +5,8 @@
   const app = document.querySelector('.app');
   if (!tg) return;
   tg.ready(); tg.expand();
+  const splash=document.getElementById('gameSplash');
+  if(splash)setTimeout(()=>splash.classList.add('hide'),1800);
   const gate = document.createElement('div');
   gate.id = 'accessGate';
   gate.innerHTML = '<div class="access-box"><div class="access-mark">🎖️</div><div class="eyebrow">ЗАКРЫТАЯ БЕТА</div><h2 id="accessTitle">Проверяем доступ</h2><p id="accessText">Подождите немного…</p><button id="accessRequest" class="gold-btn" hidden>🔑 Запросить доступ</button></div>';
