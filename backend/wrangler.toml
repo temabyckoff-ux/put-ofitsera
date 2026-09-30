@@ -1,6 +1,7 @@
 name = "put-ofitsera"
 main = "worker.js"
 compatibility_date = "2026-09-29"
+keep_vars = true
 
 [[kv_namespaces]]
 binding = "ACCESS"
