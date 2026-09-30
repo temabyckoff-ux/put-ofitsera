@@ -20,10 +20,16 @@
       const ranks=["Рядовой","Ефрейтор","Младший сержант","Сержант","Старший сержант","Старшина","Прапорщик","Старший прапорщик","Младший лейтенант","Лейтенант","Старший лейтенант","Капитан","Майор","Подполковник","Полковник","Генерал-майор","Генерал-лейтенант","Генерал-полковник","Генерал армии","Маршал"];
       let rank=0;for(let i=0;i<need.length;i++){if(clicks>=need[i])rank=i+1;else break}
       const rankEl=document.getElementById('rank'),clicksEl=document.getElementById('clicks'),levelEl=document.getElementById('level'),nextEl=document.getElementById('rankNext');
+      const num=v=>Math.max(0,Number(v)||0),fmt=v=>Math.floor(num(v)).toLocaleString('ru-RU');
       if(rankEl)rankEl.textContent=ranks[Math.min(rank,19)];
-      if(clicksEl)clicksEl.textContent=Math.floor(clicks).toLocaleString('ru-RU');
+      if(clicksEl)clicksEl.textContent=fmt(clicks);
       if(levelEl)levelEl.textContent='Уровень '+(Math.min(rank,19)+1);
       if(nextEl)nextEl.textContent=rank>=19?'Максимальное звание':'До следующего звания: '+Math.max(0,need[rank]-clicks).toLocaleString('ru-RU');
+      const energyEl=document.getElementById('energy'),creditsEl=document.getElementById('credits'),prestigeEl=document.getElementById('prestige'),medalsEl=document.getElementById('medals');
+      if(energyEl)energyEl.textContent=fmt(s.energy)+'/'+Math.min(400,100+Math.min(rank,19)*15);
+      if(creditsEl)creditsEl.textContent=fmt(s.credits);
+      if(prestigeEl)prestigeEl.textContent=fmt(s.prestige);
+      if(medalsEl)medalsEl.textContent=fmt(s.medals);
     }catch(e){console.warn('saved progress paint failed',e)}
   }
   paintSavedProgress();
